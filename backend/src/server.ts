@@ -4,10 +4,10 @@ import session from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import http from 'http';
-import { Server as WebSocketServer } from 'ws';
+import { Server as WebSocketServer, WebSocket } from 'ws'; // Import WebSocket type
 import dotenv from 'dotenv';
 
-dotenv.config(); // Loads environment variables from .env file
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -31,9 +31,8 @@ app.get('/', (req, res) => {
 });
 
 // WebSocket for real-time updates
-wss.on('connection', (ws) => {
+wss.on('connection', (ws: WebSocket) => {
   console.log('New WebSocket connection.');
-  // Send a message every 5 seconds as an example
   const interval = setInterval(() => {
     ws.send(JSON.stringify({ type: 'update', data: 'Live orchard sensor update' }));
   }, 5000);
@@ -45,4 +44,4 @@ wss.on('connection', (ws) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
+}); 
