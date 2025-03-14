@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                        // Use the latest JavaScript version
-    "module": "CommonJS",                      // Ensures compatibility with Node.js
-    "moduleResolution": "Node",                // Resolves modules properly
-    "outDir": "./dist",                        // Outputs compiled JS files to `dist`
-    "rootDir": "./src",                        // Defines source folder for TS files
-    "strict": true,                            // Enables strict type checking
-    "esModuleInterop": true,                   // Enables compatibility with CommonJS modules
-    "forceConsistentCasingInFileNames": true,  // Prevents case-sensitive import issues
-    "skipLibCheck": true                        // Skips checking declaration files
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
-  "include": ["src"],                          // Ensures TS files in `src/` are compiled
-  "exclude": ["node_modules", "dist"]          // Ignores unnecessary files
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
