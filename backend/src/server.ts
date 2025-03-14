@@ -6,8 +6,9 @@ import http from 'http';
 import { Server as WebSocketServer, WebSocket } from 'ws';
 import dotenv from 'dotenv';
 
-import authRoutes from './routes/authRoutes';
-import orchardRoutes from './routes/orchardRoutes';
+import productRoutes from './routes/productRoutes';
+app.use('/api/products', productRoutes);
+
 
 dotenv.config();
 
