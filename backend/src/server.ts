@@ -6,7 +6,9 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import { Server as WebSocketServer, WebSocket } from 'ws';
 import dotenv from 'dotenv';
-import orchardRoutes from './routes/orchardRoutes'; // orchard route import
+
+import authRoutes from './routes/authRoutes'; // ✅ Added
+import orchardRoutes from './routes/orchardRoutes';
 
 dotenv.config();
 
@@ -30,6 +32,9 @@ app.use(passport.session());
 app.get('/', (req, res) => {
   res.send('Hello from the Citrus Argentina backend!');
 });
+
+// ✅ Add this line to use authentication routes
+app.use('/api/auth', authRoutes);
 
 // Use orchard routes
 app.use('/api/orchard', orchardRoutes);
