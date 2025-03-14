@@ -1,85 +1,66 @@
-3-13-25: Citrus Argentina Web App Beta Version
+Citrus Argentina Web App - Development Progress
 
-This repository contains the beta version of the Citrus Argentina Agricultural Technology Platform. The project is split into two main parts:
-	•	Backend: An Express server written in TypeScript, handling API endpoints, session management, and real-time WebSocket updates.
-	•	Frontend: A React application (using TypeScript) built with Create React App, integrated with React Query and styled using Tailwind CSS and shadcn/ui.
+🛠️ Progress Overview (March 14, 2025)
 
-Local URLs:
-	•	Backend: http://localhost:3000
-	•	Frontend: http://localhost:3000
-(Note: The development build is not optimized. Use npm run build for a production build.)
+Today, we made significant progress in setting up and refining the backend for the Citrus Argentina web application. Here’s what we accomplished:
 
-⸻
-
-Documentation Summary – Thursday, March 13, 2025
-
-What We Accomplished Today:
-	1.	Project Setup & Repository Management:
-	•	Renamed the local folder from CA-WEBAPP to citrus-argentina-webapp to comply with npm naming conventions.
-	•	Successfully cloned the private GitHub repository.
-	2.	Backend Setup:
-	•	Initialization:
-	•	Created the backend folder.
-	•	Ran npm init -y to initialize the project.
-	•	Dependency Installation:
-	•	Installed key packages: express, express-session, passport, body-parser, ws, multer, and dotenv.
-	•	Set up TypeScript with typescript, ts-node, and installed type definitions (@types/express, @types/express-session, @types/passport, @types/ws).
-	•	Folder Structure & Server:
-	•	Created the folder structure under backend/src/ with subdirectories for controllers, models, and routes.
-	•	Developed a minimal server.ts that configures Express with session management, Passport, and a WebSocket server.
-	•	Environment Configuration:
-	•	Added a .env file with configuration variables (e.g., PORT, SESSION_SECRET).
-	•	Verification:
-	•	Successfully ran the backend server using npx ts-node src/server.ts and verified it runs on port 3000.
-	3.	Frontend Setup:
-	•	Project Creation:
-	•	Created a new React project for the frontend with TypeScript using:
-
-npx create-react-app frontend --template typescript
-
-
-	•	Running the App:
-	•	Navigated into the frontend folder and started the app with npm start.
-	•	Confirmed that the React app compiled successfully and is accessible at http://localhost:3000.
-
-	4.	Visual Studio Code CLI Setup:
-	•	Installed VS Code via Homebrew.
-	•	Configured the code command by adding /opt/homebrew/bin to the PATH.
-	•	Verified that running code . opens the project in VS Code.
+✅ Completed Today:
+	1.	Backend Initialization & Setup
+	•	Installed required dependencies (express, passport, session, dotenv, ws, etc.).
+	•	Created the Express server in server.ts and set up middleware.
+	•	Enabled WebSocket functionality for real-time updates.
+	2.	Authentication Routes & Controllers
+	•	Created authRoutes.ts and authController.ts to handle user registration and login.
+	•	Implemented a simple in-memory user storage (to be replaced with a database later).
+	•	Successfully tested user registration with curl commands.
+	3.	Orchard Monitoring Routes & Controllers
+	•	Set up orchardRoutes.ts and orchardController.ts to fetch orchard data.
+	•	Created a sample response structure for orchard monitoring.
+	4.	Product API Setup
+	•	Identified missing productRoutes.ts and productController.ts.
+	•	Created productController.ts and moved it to the correct location in backend/src/controllers/.
+	•	Checked for missing imports in server.ts.
+	5.	Debugging & Fixes
+	•	Fixed EADDRINUSE error by terminating duplicate server instances.
+	•	Resolved missing route imports (authRoutes, orchardRoutes).
+	•	Confirmed correct API responses for authentication and orchard data.
 
 ⸻
 
-Plan for Friday
+🚀 Next Steps for Tomorrow (March 15, 2025)
 
-Backend Enhancements:
-	•	Expand API Endpoints:
-	•	Authentication: Implement routes/controllers for user registration and login.
-	•	Products (Commodity Data): Create routes/controllers to serve dummy product data.
-	•	Orchard Monitoring: Set up endpoints to return dummy orchard sensor data.
-	•	Supply Chain Tracking: Develop endpoints for shipment and tracking data.
-	•	Eco-Friendly Calculator: Build an endpoint to serve eco-friendly metrics.
-	•	Blockchain Simulation: Create a dummy product verification endpoint.
-	•	Testing:
-	•	Use Postman or cURL to verify that each endpoint returns the expected data.
+1️⃣ Complete API Routes & Controllers
+	•	Finish and implement productRoutes.ts, ecoRoutes.ts, and supplyChainRoutes.ts.
+	•	Remove blockchain authentication from the project.
 
-Frontend Integration:
-	•	API Client:
-	•	Create an apiClient.ts to handle fetch requests.
-	•	Data-Fetching Components:
-	•	Update the Seasonal Availability component to fetch product data from the backend.
-	•	Develop additional components for Orchard Monitoring, Supply Chain Tracking, Eco Calculator, and Product Authentication.
-	•	Real-Time Updates:
-	•	Implement a React component that connects to the WebSocket server and displays live updates.
-	•	Routing & UI Enhancements:
-	•	If needed, set up routing (using React Router or a similar solution) to manage different views.
-	•	Begin refining the UI with Tailwind CSS and shadcn/ui components.
+2️⃣ Connect Backend to Frontend
+	•	Initialize the frontend with React & TypeScript.
+	•	Set up API calls to connect React components with backend endpoints.
+	•	Test GET and POST requests from the frontend.
 
-Additional Tasks:
-	•	Documentation:
-	•	Update this README with instructions on running both the backend and frontend.
-	•	Document configuration and environment setup details.
-	•	Testing & Iteration:
-	•	Run end-to-end tests to ensure the frontend correctly fetches data from the backend.
-	•	Address any bugs or integration issues that arise.
+3️⃣ Debugging & Local Testing
+	•	Ensure all API endpoints are accessible and returning expected responses.
+	•	Check WebSocket functionality for real-time updates.
+	•	Validate that the frontend correctly renders API data.
 
-⸻ 
+4️⃣ Prepare for Beta Testing
+	•	Refine API documentation for easy testing.
+	•	Review UI/UX to ensure seamless interaction between frontend and backend.
+	•	Start planning for deployment (optional).
+
+⸻
+
+📌 How to Run the Project
+
+Backend
+
+cd backend
+npx ts-node src/server.ts
+
+Testing API (Example)
+
+curl -X GET http://localhost:3000/api/products
+
+
+
+⸻
