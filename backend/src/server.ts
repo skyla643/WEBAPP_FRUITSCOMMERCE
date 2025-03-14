@@ -7,8 +7,8 @@ import { Server as WebSocketServer, WebSocket } from 'ws';
 import dotenv from 'dotenv';
 
 import productRoutes from './routes/productRoutes';
-app.use('/api/products', productRoutes);
-
+import authRoutes from './routes/authRoutes';
+import orchardRoutes from './routes/orchardRoutes';
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Add API Routes
+app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orchard', orchardRoutes);
 
