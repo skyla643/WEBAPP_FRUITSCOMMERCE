@@ -4,14 +4,9 @@ import session from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import http from 'http';
-import { Server as WebSocketServer, WebSocket } from 'ws'; // Import WebSocket type
+import { Server as WebSocketServer, WebSocket } from 'ws';
 import dotenv from 'dotenv';
-// server.ts
-import express from 'express';
-import orchardRoutes from './routes/orchardRoutes';
-// server.ts
-import express from 'express';
-import orchardRoutes from './routes/orchardRoutes';
+import orchardRoutes from './routes/orchardRoutes'; // orchard route import
 
 dotenv.config();
 
@@ -36,6 +31,9 @@ app.get('/', (req, res) => {
   res.send('Hello from the Citrus Argentina backend!');
 });
 
+// Use orchard routes
+app.use('/api/orchard', orchardRoutes);
+
 // WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
   console.log('New WebSocket connection.');
@@ -50,4 +48,4 @@ wss.on('connection', (ws: WebSocket) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});
