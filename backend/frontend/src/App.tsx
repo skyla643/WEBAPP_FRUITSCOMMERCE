@@ -1,6 +1,6 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Dashboard from "./components/Dashboard"; 
+import Dashboard from "../frontend/src/components/Dashboard"; 
 
 const queryClient = new QueryClient();
 
