@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   mode: "development", // Set mode to development
-  entry: path.resolve(__dirname, "src", "server.ts"), // Ensure this points to your actual entry file
+  entry: path.resolve(__dirname, "../src/server.ts"), // Ensure this points to your actual entry file
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js"
