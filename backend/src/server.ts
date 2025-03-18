@@ -1,4 +1,4 @@
-import express, { RequestHandler, Router } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
@@ -18,7 +18,7 @@ const wss = new WebSocketServer({ server });
 
 // ✅ Middleware setup
 app.use(bodyParser.json());
-app.use(express.json());  // ✅ This is required for JSON body parsing
+app.use(express.json());
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'supersecret',
@@ -30,11 +30,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Add API Routes
-const router = Router();
-router.use('/products', productRoutes);
-router.use('/auth', authRoutes);
-router.use('/orchard', orchardRoutes);
-app.use('/api', router);
+app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/orchard', orchardRoutes);
 
 // ✅ WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
