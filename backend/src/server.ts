@@ -30,9 +30,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Add API Routes
-app.use('/api/products', productRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/orchard', orchardRoutes);
+app.use('/api/products', (req: Request, res: Response, next: NextFunction) => productRoutes(req, res, next));
+app.use('/api/auth', (req: Request, res: Response, next: NextFunction) => authRoutes(req, res, next));
+app.use('/api/orchard', (req: Request, res: Response, next: NextFunction) => orchardRoutes(req, res, next));
 
 // ✅ WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
