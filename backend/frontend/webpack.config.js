@@ -1,9 +1,14 @@
 const path = require("path");
 
 module.exports = {
-  mode: "development", // <-- Set mode to development
-  entry: "./src/server.ts", // <-- Ensure this points to your actual entry file
+  mode: "development", // Set mode to development
+  entry: path.resolve(__dirname, "src", "server.ts"), // Ensure this points to your actual entry file
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js"
+  },
   resolve: {
+    extensions: [".ts", ".js"], // Allow Webpack to resolve TypeScript and JavaScript files
     fallback: {
       "zlib": require.resolve("browserify-zlib"),
       "querystring": require.resolve("querystring-es3"),
