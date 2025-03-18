@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   mode: "development", // <-- Set mode to development
-  entry: "./src/index.js", // <-- Ensure this points to your actual entry file
+  entry: "./src/server.ts", // <-- Ensure this points to your actual entry file
   resolve: {
     fallback: {
       "zlib": require.resolve("browserify-zlib"),
@@ -27,6 +27,11 @@ module.exports = {
         resolve: {
           fullySpecified: false
         }
+      },
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_modules/
       }
     ]
   }
