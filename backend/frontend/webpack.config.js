@@ -17,5 +17,15 @@ module.exports = {
       "https": require.resolve("https-browserify"),
       "process": require.resolve("process/browser"),
     }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false
+        }
+      }
+    ]
   }
 };
