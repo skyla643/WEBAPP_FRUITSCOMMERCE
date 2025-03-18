@@ -10,7 +10,7 @@ type Product = {
 
 const SeasonalAvailability: React.FC = () => {
   const { data, isLoading, error } = useQuery<Product[]>({
-    queryKey: ['products'], 
+    queryKey: ['products'],
     queryFn: async () => {
       const response = await fetch('http://localhost:3000/api/products');
       if (!response.ok) throw new Error('Failed to fetch data');
