@@ -4,9 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '../api/apiClient';
 
 const SeasonalAvailability: React.FC = () => {
-  const { data, isLoading, error } = useQuery(['products'], () =>
-    fetcher('http://localhost:3000/api/products')
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['products'], 
+    queryFn: async () => {
+      const response = await fetch('http://localhost:3000/api/products');
+      if (!response.ok) throw new Error('Failed to fetch data');
+      return response.json();
+    }
+  });
 
   if (isLoading) return <div>Loading seasonal data...</div>;
   if (error) return <div>Error loading seasonal data.</div>;
