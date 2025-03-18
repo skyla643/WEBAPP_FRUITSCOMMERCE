@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler, Router } from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
@@ -30,9 +30,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Add API Routes
-app.use('/api/products', productRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/orchard', orchardRoutes);
+const router = Router();
+router.use('/products', productRoutes);
+router.use('/auth', authRoutes);
+router.use('/orchard', orchardRoutes);
+app.use('/api', router);
 
 // ✅ WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
