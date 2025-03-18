@@ -1,6 +1,8 @@
 const path = require("path");
 
 module.exports = {
+  mode: "development", // <-- Set mode to development
+  entry: "./src/index.js", // <-- Ensure this points to your actual entry file
   resolve: {
     fallback: {
       "zlib": require.resolve("browserify-zlib"),
@@ -11,8 +13,8 @@ module.exports = {
       "util": require.resolve("util/"),
       "url": require.resolve("url/"),
       "buffer": require.resolve("buffer/"),
-      "fs": false, // fs is not available in the browser
-      "net": false, // net is not available in the browser
+      "fs": false,
+      "net": false,
       "http": require.resolve("stream-http"),
       "https": require.resolve("https-browserify"),
       "process": require.resolve("process/browser"),
