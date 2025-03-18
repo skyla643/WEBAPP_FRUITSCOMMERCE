@@ -1,3 +1,9 @@
+import cors from 'cors';
+import express from 'express';
+
+const app = express();
+
+app.use(cors());
 const API_URL = "http://localhost:3000/api";
 
 export const fetchProducts = async () => {
