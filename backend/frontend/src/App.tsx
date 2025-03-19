@@ -15,6 +15,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <div className="min-h-screen bg-gray-100">
+          <Dashboard />
           <Routes>
             <Route path="/" element={<Dashboard />} />
             {/* Future routes can be added here */}
