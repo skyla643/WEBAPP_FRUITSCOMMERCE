@@ -63,3 +63,10 @@
     "util": "^0.12.5"
   }
 }
+
+"scripts": {
+  "start": "cd backend/frontend && npm start",
+  "dev": "cd backend/frontend && npm run dev",
+  "build": "cd backend/frontend && npm run build",
+  "tailwind": "npx tailwindcss -i ./src/index.css -o ./src/output.css --watch"
+}
