@@ -18,7 +18,7 @@
     "querystring-es3": "^0.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "tailwindcss": "^4.0.14",
+    "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "url": "^0.11.4",
@@ -32,5 +32,24 @@
     "express": "^4.21.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
-  }
+  },
+  "name": "ca-webapp-or-citrus-argentina-webapp",
+  "version": "1.0.0",
+  "description": "📌 Citrus Argentina Web App — Daily Summary (March 18, 2025)",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skyla643/ca-webapp-or-citrus-argentina-webapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/skyla643/ca-webapp-or-citrus-argentina-webapp/issues"
+  },
+  "homepage": "https://github.com/skyla643/ca-webapp-or-citrus-argentina-webapp#readme"
 }
