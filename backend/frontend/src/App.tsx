@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Dashboard from "@components/Dashboard";
-import SeasonalAvailability from "@components/SeasonalAvailability";
-import OrchardMonitoring from "@components/OrchardMonitoring";
-import CommodityProfile from "@components/CommodityProfile";
-import SupplyChainTracker from "@components/SupplyChainTracker";
-import EcoCalculator from "@components/EcoCalculator";
-import ProductAuthentication from "@components/ProductAuthentication";
+import Dashboard from "./components/Dashboard";
+import SeasonalAvailability from "./components/SeasonalAvailability";
+import OrchardMonitoring from "./components/OrchardMonitoring";
+import CommodityProfile from "./components/CommodityProfile";
+import SupplyChainTracker from "./components/SupplyChainTracker";
+import EcoCalculator from "./components/EcoCalculator";
+import ProductAuthentication from "./components/ProductAuthentication";
 
 const queryClient = new QueryClient();
 
