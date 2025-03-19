@@ -47,12 +47,14 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^8.2.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/cors": "^2.8.17",
     "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.21",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
+    "concurrently": "^8.2.1",
     "crypto-browserify": "^3.12.1",
     "https-browserify": "^1.0.0",
     "path-browserify": "^1.0.1",
