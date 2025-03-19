@@ -1,15 +1,26 @@
-import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Dashboard from "../frontend/src/components/Dashboard"; 
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Dashboard from "@components/Dashboard";
+import SeasonalAvailability from "@components/SeasonalAvailability";
+import OrchardMonitoring from "@components/OrchardMonitoring";
+import CommodityProfile from "@components/CommodityProfile";
+import SupplyChainTracker from "@components/SupplyChainTracker";
+import EcoCalculator from "@components/EcoCalculator";
+import ProductAuthentication from "@components/ProductAuthentication";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-gray-100">
-        <Dashboard />  {/* Render the actual dashboard */}
-      </div>
+      <Router>
+        <div className="min-h-screen bg-gray-100">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            {/* Future routes can be added here */}
+          </Routes>
+        </div>
+      </Router>
     </QueryClientProvider>
   );
 }
