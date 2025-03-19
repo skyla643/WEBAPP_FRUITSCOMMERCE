@@ -1,2 +1,2 @@
-const Dashboard = () => <div>Dashboard Component</div>;
-export default Dashboard;
+const ProductAuthentication = () => <div>Product Authentication Component</div>;
+export default ProductAuthentication;

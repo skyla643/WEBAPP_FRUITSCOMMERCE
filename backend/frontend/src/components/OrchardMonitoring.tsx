@@ -1,2 +1,2 @@
-const Dashboard = () => <div>Dashboard Component</div>;
-export default Dashboard;
+const SeasonalAvailability = () => <div>Seasonal Availability Component</div>;
+export default SeasonalAvailability;

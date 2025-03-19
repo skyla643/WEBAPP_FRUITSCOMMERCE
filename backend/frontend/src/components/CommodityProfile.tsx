@@ -1,2 +1,2 @@
-const Dashboard = () => <div>Dashboard Component</div>;
-export default Dashboard;
+const CommodityProfile = () => <div>Commodity Profile Component</div>;
+export default CommodityProfile;
