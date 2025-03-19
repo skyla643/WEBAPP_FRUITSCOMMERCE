@@ -26,4 +26,14 @@ function App() {
   );
 }
 
+<div>
+  <Dashboard />
+  <SeasonalAvailability />
+  <OrchardMonitoring />
+  <CommodityProfile />
+  <SupplyChainTracker />
+  <EcoCalculator />
+  <ProductAuthentication />
+</div>
+
 export default App;
