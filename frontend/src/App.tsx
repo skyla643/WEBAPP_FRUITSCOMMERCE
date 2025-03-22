@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 
 // Import components
-import Dashboard from './components/Dashboard';
 import CommodityProfile from './components/CommodityProfile';
+import Dashboard from './components/Dashboard';
 import EcoCalculator from './components/EcoCalculator';
 import OrchardMonitoring from './components/OrchardMonitoring';
 import ProductAuthentication from './components/ProductAuthentication';
