@@ -13,41 +13,69 @@ import SupplyChainTracker from './components/SupplyChainTracker';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Beta UI/UX Showcase</h1>
+      {/* Navigation Bar */}
+      <nav className="bg-gray-800 text-white p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Citrus Argentina</h1>
+          <ul className="flex space-x-4">
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#commodity">Commodity Profile</a></li>
+            <li><a href="#eco">Eco Calculator</a></li>
+            <li><a href="#orchard">Orchard Monitoring</a></li>
+            <li><a href="#auth">Product Authentication</a></li>
+            <li><a href="#seasonal">Seasonal Availability</a></li>
+            <li><a href="#supply">Supply Chain</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Header */}
+      <header className="bg-blue-600 text-white p-8 text-center">
+        <h2 className="text-4xl font-extrabold">Beta UI/UX Showcase</h2>
+        <p className="mt-4 text-lg">A preview of our work-in-progress user interface and experience</p>
       </header>
-      <main>
-        <section>
-          <h2>Dashboard</h2>
+
+      {/* Main Content */}
+      <main className="container mx-auto p-8 space-y-12">
+        <section id="dashboard">
+          <h3 className="text-3xl font-bold mb-4">Dashboard</h3>
           <Dashboard />
         </section>
-        <section>
-          <h2>Commodity Profile</h2>
+
+        <section id="commodity">
+          <h3 className="text-3xl font-bold mb-4">Commodity Profile</h3>
           <CommodityProfile />
         </section>
-        <section>
-          <h2>Eco Calculator</h2>
+
+        <section id="eco">
+          <h3 className="text-3xl font-bold mb-4">Eco Calculator</h3>
           <EcoCalculator />
         </section>
-        <section>
-          <h2>Orchard Monitoring</h2>
+
+        <section id="orchard">
+          <h3 className="text-3xl font-bold mb-4">Orchard Monitoring</h3>
           <OrchardMonitoring />
         </section>
-        <section>
-          <h2>Product Authentication</h2>
+
+        <section id="auth">
+          <h3 className="text-3xl font-bold mb-4">Product Authentication</h3>
           <ProductAuthentication />
         </section>
-        <section>
-          <h2>Seasonal Availability</h2>
+
+        <section id="seasonal">
+          <h3 className="text-3xl font-bold mb-4">Seasonal Availability</h3>
           <SeasonalAvailability />
         </section>
-        <section>
-          <h2>Supply Chain Tracker</h2>
+
+        <section id="supply">
+          <h3 className="text-3xl font-bold mb-4">Supply Chain Tracker</h3>
           <SupplyChainTracker />
         </section>
       </main>
-      <footer>
-        <p>&copy; 2025 Your Company Name</p>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; 2025 Citrus Argentina. All rights reserved.</p>
       </footer>
     </div>
   );
