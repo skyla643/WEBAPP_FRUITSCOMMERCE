@@ -101,25 +101,5 @@ Write a user manual or help section explaining how to use the website.
 	•	Developer Documentation:
 Update README and add inline documentation for future developers.
 
-Contributing
-
-If you’d like to contribute or provide feedback:
-	•	Please open issues on GitHub.
-	•	Follow our code style and commit guidelines.
-	•	Pull requests are welcome.
-
-License
-
-[Include your license information here if applicable.]
-
-⸻
-
-This README serves as both documentation of what we’ve achieved and a roadmap for the next phases. It should give both technical and non-technical stakeholders a clear view of the current state and future direction of the Citrus Argentina website.
-
-Feel free to adjust any section or add additional details as needed!
-
-⸻
-
-Happy coding!
 
 --- 
