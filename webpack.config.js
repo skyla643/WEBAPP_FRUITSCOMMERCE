@@ -3,6 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
   resolve: {
+    extensions: ['.tsx', '.ts', '.js'], // <== Added this line
     fallback: {
       "zlib": require.resolve("browserify-zlib"),
       "querystring": require.resolve("querystring-es3"),
