@@ -1,5 +1,6 @@
 // src/components/Dashboard.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   return (
@@ -9,29 +10,29 @@ const Dashboard: React.FC = () => {
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <a href="/dashboard" className="hover:text-accentOrange">
+              <Link to="/dashboard" className="hover:text-accentOrange">
                 Dashboard
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/orchards" className="hover:text-accentOrange">
+              <Link to="/orchards" className="hover:text-accentOrange">
                 Orchards
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/pest-detection" className="hover:text-accentOrange">
+              <Link to="/pest-detection" className="hover:text-accentOrange">
                 Pest Detection
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/supply-chain" className="hover:text-accentOrange">
+              <Link to="/supply-chain" className="hover:text-accentOrange">
                 Supply Chain
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/market-data" className="hover:text-accentOrange">
+              <Link to="/market-data" className="hover:text-accentOrange">
                 Market Data
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
