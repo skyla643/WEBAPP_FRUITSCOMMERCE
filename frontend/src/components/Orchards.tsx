@@ -1,18 +1,62 @@
 // src/components/Orchards.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Orchards: React.FC = () => {
   return (
-    <div className="min-h-screen bg-lightGray">
-      <header className="bg-earthGreen text-white py-4 px-8 flex justify-between items-center shadow-custom-light">
-        <h1 className="text-2xl font-heading">Orchard Monitoring</h1>
-        {/* Optional: include navigation or logout if needed */}
+    <div className="min-h-screen bg-lightGray flex flex-col">
+      {/* Top Bar */}
+      <header className="bg-earthGreen text-white py-2 px-8 flex items-center justify-between shadow-custom-light">
+        <div className="flex items-center space-x-4">
+          <h1 className="text-2xl font-heading">Citrus Argentina</h1>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-sm sm:text-base">Welcome, test1234</span>
+          <button className="bg-transparent hover:bg-accentOrange transition-colors duration-300 text-white px-3 py-1 rounded">
+            Logout
+          </button>
+        </div>
       </header>
-      <main className="p-8">
+
+      {/* Navigation Bar */}
+      <nav className="bg-white shadow-custom-light px-8">
+        <ul className="flex space-x-4 py-2">
+          <li>
+            <Link to="/dashboard" className="hover:text-accentOrange">
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link to="/orchards" className="hover:text-accentOrange">
+              Orchards
+            </Link>
+          </li>
+          <li>
+            <Link to="/pest-detection" className="hover:text-accentOrange">
+              Pest Detection
+            </Link>
+          </li>
+          <li>
+            <Link to="/supply-chain" className="hover:text-accentOrange">
+              Supply Chain
+            </Link>
+          </li>
+          <li>
+            <Link to="/market-data" className="hover:text-accentOrange">
+              Market Data
+            </Link>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Main Content */}
+      <main className="flex-grow p-8">
         <div className="grid grid-cols-1 gap-6">
           {/* Salta Estate Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
-            <h2 className="text-xl font-heading text-darkBlue mb-1">Salta Estate</h2>
+            <h2 className="text-xl font-heading text-darkBlue mb-1">
+              Salta Estate
+            </h2>
             <p className="text-darkBlue mb-4">Salta Province</p>
             <div>
               <p className="text-gray-700">
@@ -28,7 +72,9 @@ const Orchards: React.FC = () => {
           </div>
           {/* Tucumán Valley Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
-            <h2 className="text-xl font-heading text-darkBlue mb-1">Tucumán Valley</h2>
+            <h2 className="text-xl font-heading text-darkBlue mb-1">
+              Tucumán Valley
+            </h2>
             <p className="text-darkBlue mb-4">Tucumán Province</p>
             <div>
               <p className="text-gray-700">
