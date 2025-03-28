@@ -1,13 +1,17 @@
 // src/components/Login.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement login functionality here (for now, it can be a placeholder)
+    // Simulate login by redirecting to the dashboard.
+    // (Here, you can also add validation or any mock authentication logic.)
+    navigate('/dashboard');
   };
 
   return (
