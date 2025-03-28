@@ -12,16 +12,13 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Show login screen at the root */}
+        {/* Root shows Login */}
         <Route path="/" element={<Login />} />
-        {/* Dashboard after login */}
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* Other routes */}
         <Route path="/orchards" element={<Orchards />} />
         <Route path="/pest-detection" element={<PestDetection />} />
         <Route path="/supply-chain" element={<SupplyChain />} />
         <Route path="/market-data" element={<MarketData />} />
-        {/* Fallback */}
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>
