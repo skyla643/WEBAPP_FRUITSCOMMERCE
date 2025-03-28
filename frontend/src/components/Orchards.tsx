@@ -1,8 +1,11 @@
 // src/components/Orchards.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-// Icons from react-icons
 import { WiRaindrop, WiThermometer } from 'react-icons/wi';
+
+// Cast the icons to React functional components to satisfy TypeScript
+const RaindropIcon = WiRaindrop as React.FC<React.SVGProps<SVGSVGElement>>;
+const ThermometerIcon = WiThermometer as React.FC<React.SVGProps<SVGSVGElement>>;
 
 const Orchards: React.FC = () => {
   return (
@@ -53,9 +56,6 @@ const Orchards: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-grow p-8">
-        {/* Title or Subtitle if desired */}
-        {/* <h2 className="text-2xl font-heading text-darkBlue mb-6">Orchard Monitoring</h2> */}
-
         <div className="grid grid-cols-1 gap-6">
           {/* Salta Estate Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
@@ -63,11 +63,11 @@ const Orchards: React.FC = () => {
             <p className="text-darkBlue mb-4">Salta Province</p>
             <div className="text-gray-700 space-y-1">
               <p className="flex items-center">
-                <WiRaindrop className="text-accentOrange mr-2 text-xl" />
+                <RaindropIcon className="text-accentOrange mr-2 text-xl" />
                 <strong className="mr-1">Soil Moisture:</strong> 65%
               </p>
               <p className="flex items-center">
-                <WiThermometer className="text-accentOrange mr-2 text-xl" />
+                <ThermometerIcon className="text-accentOrange mr-2 text-xl" />
                 <strong className="mr-1">Temperature:</strong> 24°C
               </p>
               <p className="text-gray-500 text-sm mt-2">
@@ -75,18 +75,17 @@ const Orchards: React.FC = () => {
               </p>
             </div>
           </div>
-
           {/* Tucumán Valley Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
             <h2 className="text-xl font-heading text-darkBlue mb-1">Tucumán Valley</h2>
             <p className="text-darkBlue mb-4">Tucumán Province</p>
             <div className="text-gray-700 space-y-1">
               <p className="flex items-center">
-                <WiRaindrop className="text-accentOrange mr-2 text-xl" />
+                <RaindropIcon className="text-accentOrange mr-2 text-xl" />
                 <strong className="mr-1">Soil Moisture:</strong> 58%
               </p>
               <p className="flex items-center">
-                <WiThermometer className="text-accentOrange mr-2 text-xl" />
+                <ThermometerIcon className="text-accentOrange mr-2 text-xl" />
                 <strong className="mr-1">Temperature:</strong> 26°C
               </p>
               <p className="text-gray-500 text-sm mt-2">
