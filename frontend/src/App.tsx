@@ -8,8 +8,10 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/*" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Fallback route goes to Login */}
+        <Route path="*" element={<Login />} />
       </Routes>
     </Router>
   );
