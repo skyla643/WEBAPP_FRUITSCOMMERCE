@@ -3,9 +3,13 @@ import React from 'react';
 
 const Orchards: React.FC = () => {
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Orchard Monitoring</h2>
-      <p>Mock orchard monitoring data goes here.</p>
+    <div className="min-h-screen bg-lightGray p-8">
+      <header className="bg-earthGreen text-white py-4 px-8 flex justify-between items-center shadow-custom-light">
+        <h1 className="text-2xl font-heading">Orchard Monitoring</h1>
+      </header>
+      <main className="p-8 bg-white rounded-lg shadow-custom-light mt-4">
+        <p>Mock orchard monitoring data goes here.</p>
+      </main>
     </div>
   );
 };
