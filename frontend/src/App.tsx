@@ -12,16 +12,17 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Default route shows the Login screen */}
-        <Route path="/login" element={<Login />} />
-        {/* Routes for each section */}
+        {/* Show login screen at the root */}
+        <Route path="/" element={<Login />} />
+        {/* Dashboard after login */}
         <Route path="/dashboard" element={<Dashboard />} />
+        {/* Other routes */}
         <Route path="/orchards" element={<Orchards />} />
         <Route path="/pest-detection" element={<PestDetection />} />
         <Route path="/supply-chain" element={<SupplyChain />} />
         <Route path="/market-data" element={<MarketData />} />
-        {/* Fallback route (if you want to default to Dashboard for unrecognized routes, change this as needed) */}
-        <Route path="*" element={<Dashboard />} />
+        {/* Fallback */}
+        <Route path="*" element={<Login />} />
       </Routes>
     </Router>
   );
