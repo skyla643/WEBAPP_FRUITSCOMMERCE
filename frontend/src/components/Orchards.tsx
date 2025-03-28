@@ -1,6 +1,8 @@
 // src/components/Orchards.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+// Icons from react-icons
+import { WiRaindrop, WiThermometer } from 'react-icons/wi';
 
 const Orchards: React.FC = () => {
   return (
@@ -51,37 +53,41 @@ const Orchards: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-grow p-8">
+        {/* Title or Subtitle if desired */}
+        {/* <h2 className="text-2xl font-heading text-darkBlue mb-6">Orchard Monitoring</h2> */}
+
         <div className="grid grid-cols-1 gap-6">
           {/* Salta Estate Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
-            <h2 className="text-xl font-heading text-darkBlue mb-1">
-              Salta Estate
-            </h2>
+            <h2 className="text-xl font-heading text-darkBlue mb-1">Salta Estate</h2>
             <p className="text-darkBlue mb-4">Salta Province</p>
-            <div>
-              <p className="text-gray-700">
-                <strong>Soil Moisture:</strong> 65%
+            <div className="text-gray-700 space-y-1">
+              <p className="flex items-center">
+                <WiRaindrop className="text-accentOrange mr-2 text-xl" />
+                <strong className="mr-1">Soil Moisture:</strong> 65%
               </p>
-              <p className="text-gray-700">
-                <strong>Temperature:</strong> 24°C
+              <p className="flex items-center">
+                <WiThermometer className="text-accentOrange mr-2 text-xl" />
+                <strong className="mr-1">Temperature:</strong> 24°C
               </p>
               <p className="text-gray-500 text-sm mt-2">
                 Last updated: 3/10/2025, 6:59:03 PM
               </p>
             </div>
           </div>
+
           {/* Tucumán Valley Card */}
           <div className="bg-white rounded-lg shadow-custom-light p-6">
-            <h2 className="text-xl font-heading text-darkBlue mb-1">
-              Tucumán Valley
-            </h2>
+            <h2 className="text-xl font-heading text-darkBlue mb-1">Tucumán Valley</h2>
             <p className="text-darkBlue mb-4">Tucumán Province</p>
-            <div>
-              <p className="text-gray-700">
-                <strong>Soil Moisture:</strong> 58%
+            <div className="text-gray-700 space-y-1">
+              <p className="flex items-center">
+                <WiRaindrop className="text-accentOrange mr-2 text-xl" />
+                <strong className="mr-1">Soil Moisture:</strong> 58%
               </p>
-              <p className="text-gray-700">
-                <strong>Temperature:</strong> 26°C
+              <p className="flex items-center">
+                <WiThermometer className="text-accentOrange mr-2 text-xl" />
+                <strong className="mr-1">Temperature:</strong> 26°C
               </p>
               <p className="text-gray-500 text-sm mt-2">
                 Last updated: 3/10/2025, 6:59:03 PM
