@@ -31,7 +31,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0"
   },
   "name": "ca-webapp-or-citrus-argentina-webapp",
   "version": "1.0.0",
