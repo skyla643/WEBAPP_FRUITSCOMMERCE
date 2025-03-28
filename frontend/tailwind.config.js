@@ -1,14 +1,14 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx,html}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        earthGreen: "#556B2F",
-        brandYellow: "#FFD700",
-        accentOrange: "#FFA500",
+        earthGreen: '#2d6a4f',
+        brandYellow: '#ffd166',
+        accentOrange: '#f28482',
       },
       fontFamily: {
-        sans: ['Montserrat', 'ui-sans-serif', 'system-ui'],
+        sans: ['Montserrat', 'sans-serif'],
       },
       spacing: {
         '72': '18rem',
@@ -16,9 +16,9 @@ module.exports = {
         '96': '24rem',
       },
       boxShadow: {
-        'custom-light': '0 2px 4px rgba(0, 0, 0, 0.1)',
+        'custom-light': '0 4px 6px rgba(0, 0, 0, 0.1)',
       },
     },
   },
   plugins: [],
-};
+}
