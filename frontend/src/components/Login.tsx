@@ -9,8 +9,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login by redirecting to the dashboard.
-    // (Here, you can also add validation or any mock authentication logic.)
+    // Simulate a login and redirect to the dashboard
     navigate('/dashboard');
   };
 
