@@ -7,7 +7,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add login logic here
+    // Implement login functionality here (for now, it can be a placeholder)
   };
 
   return (
