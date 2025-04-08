@@ -11,8 +11,9 @@ module.exports = {
         lightGray: '#f0f0f0',
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', 'Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         heading: ['Poppins', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
       },
       spacing: {
         '72': '18rem',
@@ -29,30 +30,10 @@ module.exports = {
       transitionProperty: {
         width: 'width',
       },
-    },
-  },
-  plugins: [],
-  extend: {
-    fontFamily: {
-      sans: ['Inter', 'sans-serif'],
-    },
-  },
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
-      },
-    },
-  }
-}
-module.exports = {
-  theme: {
-    extend: {
       animation: {
         'spin-slow': 'spin 4s linear infinite',
       },
     },
   },
   plugins: [],
-}
+};
