@@ -15,10 +15,14 @@ const severityColor = {
   high: 'bg-red-100 text-red-700',
 };
 
+// Explicitly cast the icons as valid React SVG Functional Components
+const IconBugReport: React.FC<React.SVGProps<SVGSVGElement>> = MdBugReport as React.FC<React.SVGProps<SVGSVGElement>>;
+const IconExclamation: React.FC<React.SVGProps<SVGSVGElement>> = FaExclamationTriangle as React.FC<React.SVGProps<SVGSVGElement>>;
+
 const PestCard: React.FC<PestCardProps> = ({ pestName, location, severity, lastDetected }) => {
   return (
     <div className="bg-white p-4 shadow rounded mb-4 flex items-start gap-4">
-      <MdBugReport className="text-3xl text-accentOrange" />
+      <IconBugReport className="text-3xl text-accentOrange" />
       <div className="flex-1">
         <h3 className="text-xl font-bold">{pestName}</h3>
         <p className="text-sm text-gray-600">📍 {location}</p>
@@ -27,7 +31,7 @@ const PestCard: React.FC<PestCardProps> = ({ pestName, location, severity, lastD
       <span
         className={`px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 ${severityColor[severity]}`}
       >
-        <FaExclamationTriangle />
+        <IconExclamation />
         {severity.toUpperCase()}
       </span>
     </div>
