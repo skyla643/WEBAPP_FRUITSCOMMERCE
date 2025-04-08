@@ -1,6 +1,7 @@
 // components/LoadingScreen.tsx
 import React from 'react';
 import { FaLemon } from 'react-icons/fa';
+import { FaLemon as LemonIcon } from 'react-icons/fa';
 
 const LoadingScreen: React.FC = () => {
   return (

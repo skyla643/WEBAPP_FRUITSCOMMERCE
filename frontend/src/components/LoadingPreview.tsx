@@ -1,5 +1,7 @@
 import React from 'react';
 import { FaLemon } from 'react-icons/fa';
+import { FaLemon as LemonIcon } from 'react-icons/fa';
+<LemonIcon className="text-6xl text-orange-500 animate-spin-slow mx-auto" />
 
 const LoadingPreview: React.FC = () => {
   return (
