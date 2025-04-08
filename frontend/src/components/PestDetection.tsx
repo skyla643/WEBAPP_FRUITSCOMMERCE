@@ -1,8 +1,15 @@
 import React from 'react';
 import PestCard from './PestCard';
 
+interface PestAlert {
+  pestName: string;
+  location: string;
+  severity: 'low' | 'moderate' | 'high';
+  lastDetected: string;
+}
+
 const PestDetection: React.FC = () => {
-  const pestAlerts = [
+  const pestAlerts: PestAlert[] = [
     {
       pestName: 'Citrus Leafminer',
       location: 'Tucumán Valley',
