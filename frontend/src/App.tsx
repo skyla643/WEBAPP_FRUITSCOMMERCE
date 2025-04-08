@@ -8,6 +8,8 @@ import PestDetection from './components/PestDetection';
 import SupplyChain from './components/SupplyChain';
 import MarketData from './components/MarketData';
 import ClientManager from './components/ClientManager'; // <-- ADDED
+import Signup from './components/Signup';
+<Route path="/signup" element={<Signup />} />
 
 const App: React.FC = () => {
   return (
