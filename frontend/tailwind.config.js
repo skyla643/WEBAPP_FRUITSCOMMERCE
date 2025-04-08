@@ -32,6 +32,11 @@ module.exports = {
     },
   },
   plugins: [],
+  extend: {
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+    },
+  },
   theme: {
     extend: {
       fontFamily: {
