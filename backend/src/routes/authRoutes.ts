@@ -1,10 +1,10 @@
-import express from 'express';
-import { loginUser, registerUser } from '../controllers/authController';
+// backend/src/routes/supplyChainRoutes.ts
+import express, { Router } from 'express';
 
+const router: Router = express.Router();
 
-const router = express.Router();
-
-router.post('/login', loginUser);
-router.post('/register', registerUser);
+router.get('/', (req, res) => {
+  res.json({ message: 'Supply chain route works!' });
+});
 
 export default router;

@@ -1,8 +1,10 @@
-import express from 'express';
-import { getProducts } from '../controllers/productController';
+// backend/src/routes/supplyChainRoutes.ts
+import express, { Router } from 'express';
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get('/', getProducts);
+router.get('/', (req, res) => {
+  res.json({ message: 'Supply chain route works!' });
+});
 
 export default router;

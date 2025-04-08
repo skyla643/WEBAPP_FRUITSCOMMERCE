@@ -1,8 +1,8 @@
-// orchardRoutes.ts
-import express from 'express';
+// backend/src/routes/orchardRoutes.ts
+import express, { Router } from 'express';
 import { getOrchardData } from '../controllers/orchardController';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/', getOrchardData);
 
