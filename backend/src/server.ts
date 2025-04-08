@@ -10,7 +10,6 @@ import productRoutes from './routes/productRoutes';
 import authRoutes from './routes/authRoutes';
 import orchardRoutes from './routes/orchardRoutes';
 
-
 dotenv.config();
 
 const app = express();
@@ -33,9 +32,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ✅ Add API Routes
-app.use('/api/products', (req: Request, res: Response, next: NextFunction) => productRoutes(req, res, next));
-app.use('/api/auth', (req: Request, res: Response, next: NextFunction) => authRoutes(req, res, next));
-app.use('/api/orchard', (req: Request, res: Response, next: NextFunction) => orchardRoutes(req, res, next));
+app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/orchard', orchardRoutes);
 
 // ✅ WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
