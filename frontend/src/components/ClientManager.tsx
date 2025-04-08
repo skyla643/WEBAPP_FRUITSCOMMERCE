@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ClientManager from './components/ClientManager';
 
 const ClientManager: React.FC = () => {
   const [clients, setClients] = useState<any[]>([]);

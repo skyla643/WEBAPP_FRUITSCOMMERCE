@@ -13,6 +13,10 @@ import supplyChainRoutes from './routes/supplyChainRoutes';
 import ecoRoutes from './routes/ecoRoutes';
 import blockchainRoutes from './routes/blockchainRoutes';
 import clientRoutes from './routes/clientRoutes';
+import supplyChainRoutes from './routes/supplyChainRoutes';
+import blockchainRoutes from './routes/blockchainRoutes';
+
+
 
 dotenv.config();
 
@@ -21,6 +25,8 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 // Middleware setup
+app.use('/api/supply-chain', supplyChainRoutes);
+app.use('/api/blockchain', blockchainRoutes);
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(session({
