@@ -1,6 +1,6 @@
 import React from 'react';
-import * as MdIcons from 'react-icons/md';
-import * as FaIcons from 'react-icons/fa';
+import { MdBugReport } from 'react-icons/md';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 interface PestCardProps {
   pestName: string;
@@ -18,19 +18,19 @@ const severityColor = {
 const PestCard: React.FC<PestCardProps> = ({ pestName, location, severity, lastDetected }) => {
   return (
     <div className="bg-white p-4 shadow rounded mb-4 flex items-start gap-4">
-  <MdIcons.MdBugReport className="text-3xl text-accentOrange" />
-  <div className="flex-1">
-    <h3 className="text-xl font-bold">{pestName}</h3>
-    <p className="text-sm text-gray-600">📍 {location}</p>
-    <p className="text-sm text-gray-500">🗓️ Last detected: {lastDetected}</p>
-  </div>
-  <span
-    className={`px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 ${severityColor[severity]}`}
-  >
-    <FaIcons.FaExclamationTriangle />
-    {severity.toUpperCase()}
-  </span>
-</div>
+      <MdBugReport className="text-3xl text-accentOrange" />
+      <div className="flex-1">
+        <h3 className="text-xl font-bold">{pestName}</h3>
+        <p className="text-sm text-gray-600">📍 {location}</p>
+        <p className="text-sm text-gray-500">🗓️ Last detected: {lastDetected}</p>
+      </div>
+      <span
+        className={`px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 ${severityColor[severity]}`}
+      >
+        <FaExclamationTriangle />
+        {severity.toUpperCase()}
+      </span>
+    </div>
   );
 };
 
