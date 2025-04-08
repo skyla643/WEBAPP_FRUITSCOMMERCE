@@ -1,4 +1,5 @@
 // tailwind.config.js
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -11,7 +12,7 @@ module.exports = {
         lightGray: '#f0f0f0',
       },
       fontFamily: {
-        sans: ['Inter', 'Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'sans-serif'],
         heading: ['Poppins', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
       },
