@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
+// backend/src/server.ts
+import express, { RequestHandler } from 'express';
 import session, { SessionOptions } from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
@@ -19,23 +20,23 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-// ===== Middleware Setup =====
+// Middleware
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Define session options explicitly
+// Session options
 const sessionOptions: SessionOptions = {
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
 };
 
-// Cast the middleware as express.RequestHandler
-app.use(session(sessionOptions) as express.RequestHandler);
-app.use(passport.initialize() as express.RequestHandler);
-app.use(passport.session() as express.RequestHandler);
+// Double-cast to avoid TS type mismatch 
+app.use(session(sessionOptions) as unknown as RequestHandler);
+app.use(passport.initialize() as unknown as RequestHandler);
+app.use(passport.session() as unknown as RequestHandler);
 
-// ===== Routes =====
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orchard', orchardRoutes);
@@ -43,7 +44,7 @@ app.use('/api/supply-chain', supplyChainRoutes);
 app.use('/api/eco', ecoRoutes);
 app.use('/api/clients', clientRoutes);
 
-// ===== WebSocket for Real-Time Updates =====
+// WebSocket
 wss.on('connection', (ws: WebSocket) => {
   console.log('New WebSocket connection.');
   const interval = setInterval(() => {
@@ -52,7 +53,6 @@ wss.on('connection', (ws: WebSocket) => {
   ws.on('close', () => clearInterval(interval));
 });
 
-// ===== Start the Server =====
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
