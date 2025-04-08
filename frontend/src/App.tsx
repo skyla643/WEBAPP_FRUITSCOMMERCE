@@ -1,6 +1,8 @@
 // frontend/src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Components
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
@@ -10,16 +12,19 @@ import SupplyChain from './components/SupplyChain';
 import MarketData from './components/MarketData';
 import ClientManager from './components/ClientManager';
 import LoadingScreen from './components/LoadingScreen';
+import LoadingPreview from './components/LoadingPreview';
+
+const devMode = true; // Toggle to false to run the full app
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setLoading(false), 2000); // 2 sec
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
+  if (devMode) return <LoadingPreview />;
   if (loading) return <LoadingScreen />;
 
   return (
