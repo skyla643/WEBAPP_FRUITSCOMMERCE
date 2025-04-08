@@ -9,6 +9,10 @@ import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes';
 import authRoutes from './routes/authRoutes';
 import orchardRoutes from './routes/orchardRoutes';
+import supplyChainRoutes from './routes/supplyChainRoutes';
+import ecoRoutes from './routes/ecoRoutes';
+import blockchainRoutes from './routes/blockchainRoutes';
+import clientRoutes from './routes/clientRoutes';
 
 dotenv.config();
 
@@ -16,27 +20,27 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-// ✅ Middleware setup
-import clientRoutes from './routes/clientRoutes';
-app.use('/api/clients', clientRoutes); 
+// Middleware setup
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'supersecret',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'supersecret',
+  resave: false,
+  saveUninitialized: false,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ✅ Add API Routes
-app.use('/api/products', productRoutes);
+// API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 app.use('/api/orchard', orchardRoutes);
+app.use('/api/supply-chain', supplyChainRoutes);
+app.use('/api/eco', ecoRoutes);
+app.use('/api/blockchain', blockchainRoutes);
+app.use('/api/clients', clientRoutes);
 
-// ✅ WebSocket for real-time updates
+// WebSocket for real-time updates
 wss.on('connection', (ws: WebSocket) => {
   console.log('New WebSocket connection.');
   const interval = setInterval(() => {
@@ -45,7 +49,7 @@ wss.on('connection', (ws: WebSocket) => {
   ws.on('close', () => clearInterval(interval));
 });
 
-// ✅ Start the server
+// Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
