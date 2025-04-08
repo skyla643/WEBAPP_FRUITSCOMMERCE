@@ -10,6 +10,7 @@ import productRoutes from './routes/productRoutes';
 import authRoutes from './routes/authRoutes';
 import orchardRoutes from './routes/orchardRoutes';
 
+
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,8 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 // ✅ Middleware setup
+import clientRoutes from './routes/clientRoutes';
+app.use('/api/clients', clientRoutes); 
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(
