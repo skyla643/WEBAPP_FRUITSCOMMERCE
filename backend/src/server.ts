@@ -1,6 +1,5 @@
-// backend/src/server.ts
 import express, { Request, Response, NextFunction } from 'express';
-import session from 'express-session';
+import session, { SessionOptions } from 'express-session';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import http from 'http';
@@ -20,16 +19,21 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-// ===== Middleware =====
+// ===== Middleware Setup =====
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(session({
+
+// Define session options explicitly
+const sessionOptions: SessionOptions = {
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+};
+
+// Cast the middleware as express.RequestHandler
+app.use(session(sessionOptions) as express.RequestHandler);
+app.use(passport.initialize() as express.RequestHandler);
+app.use(passport.session() as express.RequestHandler);
 
 // ===== Routes =====
 app.use('/api/auth', authRoutes);
@@ -37,7 +41,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orchard', orchardRoutes);
 app.use('/api/supply-chain', supplyChainRoutes);
 app.use('/api/eco', ecoRoutes);
-app.use('/api/clients', clientRoutes); // Clients route
+app.use('/api/clients', clientRoutes);
 
 // ===== WebSocket for Real-Time Updates =====
 wss.on('connection', (ws: WebSocket) => {
