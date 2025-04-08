@@ -11,23 +11,21 @@ import PestDetection from './components/PestDetection';
 import SupplyChain from './components/SupplyChain';
 import MarketData from './components/MarketData';
 import ClientManager from './components/ClientManager';
-import LoadingScreen from './components/LoadingScreen';
-import LoadingPreview from './components/LoadingPreview';
-
-const devMode = false; // Set to false to show the actual LoadingScreen
+import LoadingScreen from './components/LoadingScreen'; // keep your loading screen
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
+  // Simulate 2-second loading, then remove the spinner
   useEffect(() => {
-    // Simulate loading delay for 2 seconds
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (devMode) return <LoadingPreview />;
+  // Show LoadingScreen until loading = false
   if (loading) return <LoadingScreen />;
 
+  // Otherwise load your actual routes
   return (
     <Router>
       <Routes>
