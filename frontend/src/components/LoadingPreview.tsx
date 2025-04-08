@@ -1,6 +1,6 @@
 // frontend/src/components/LoadingPreview.tsx
 import React from 'react';
-import { FaLemon } from 'react-icons/fa6'; // use correct library!
+import { FaLemon } from 'react-icons/fa6';
 
 const LoadingPreview: React.FC = () => {
   return (
