@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FcGoogle } from 'react-icons/fc';
+import { FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Login: React.FC = () => {
   return (
@@ -68,14 +70,14 @@ const Login: React.FC = () => {
           <div className="text-center">
             <p className="text-gray-500 text-sm">or continue with</p>
             <div className="flex justify-center gap-4 mt-2">
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition">
-                <img src="/assets/google-icon.svg" alt="Google" className="h-6 w-6" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-xl">
+                <FcGoogle />
               </button>
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition">
-                <img src="/assets/linkedin-icon.svg" alt="LinkedIn" className="h-6 w-6" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-blue-700 text-xl">
+                <FaLinkedin />
               </button>
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition">
-                <img src="/assets/twitter-icon.svg" alt="Twitter" className="h-6 w-6" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-sky-500 text-xl">
+                <FaTwitter />
               </button>
             </div>
           </div>
