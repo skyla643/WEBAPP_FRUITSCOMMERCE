@@ -26,7 +26,6 @@ const Login: React.FC = () => {
       <div className="w-1/2 bg-white flex items-center justify-center relative z-20">
         <div className="max-w-sm w-full space-y-6 p-8 rounded-xl shadow-2xl bg-white/80 backdrop-blur-md transition-all">
 
-          {/* 🍋 Welcome */}
           <h2 className="text-lg font-medium text-orange-500 flex items-center gap-1">
             <span className="animate-pulse">🍋</span>
             Hello, welcome to Citrus Argentina
@@ -37,7 +36,6 @@ const Login: React.FC = () => {
             <div className="h-[2px] w-1/2 bg-gradient-to-r from-orange-300 to-yellow-400 rounded-full mt-1" />
           </div>
 
-          {/* Login Form */}
           <form className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -64,25 +62,23 @@ const Login: React.FC = () => {
             </button>
           </form>
 
-          {/* Social Logins */}
           <div className="text-center">
             <p className="text-gray-500 text-sm">or continue with</p>
             <div className="flex justify-center gap-4 mt-2">
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition">
-                <FcGoogle className="text-xl" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-xl">
+                <FcGoogle />
               </button>
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-blue-700">
-                <FaLinkedin className="text-xl" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-blue-700 text-xl">
+                <FaLinkedin />
               </button>
-              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-sky-500">
-                <FaTwitter className="text-xl" />
+              <button className="p-3 bg-white rounded-full shadow hover:scale-105 hover:shadow-lg transition text-sky-500 text-xl">
+                <FaTwitter />
               </button>
             </div>
           </div>
 
-          {/* Signup link */}
           <div className="text-center text-sm text-gray-500">
-            Don’t have an account yet?{" "}
+            Don’t have an account yet?{' '}
             <Link to="/signup" className="text-green-600 hover:underline">
               Sign Up
             </Link>
