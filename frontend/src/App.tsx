@@ -14,12 +14,13 @@ import ClientManager from './components/ClientManager';
 import LoadingScreen from './components/LoadingScreen';
 import LoadingPreview from './components/LoadingPreview';
 
-const devMode = true; // Toggle to false to run the full app
+const devMode = false; // Set to false to show the actual LoadingScreen
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate loading delay for 2 seconds
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
