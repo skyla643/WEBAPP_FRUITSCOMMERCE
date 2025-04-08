@@ -1,4 +1,3 @@
-// backend/src/routes/orchardRoutes.ts
 import express, { Router } from 'express';
 import { getOrchardData } from '../controllers/orchardController';
 

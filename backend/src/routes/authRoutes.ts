@@ -1,10 +1,9 @@
-// backend/src/routes/supplyChainRoutes.ts
 import express, { Router } from 'express';
+import { loginUser, registerUser } from '../controllers/authController';
 
 const router: Router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: 'Supply chain route works!' });
-});
+router.post('/login', loginUser);
+router.post('/register', registerUser);
 
 export default router;

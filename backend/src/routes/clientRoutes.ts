@@ -1,10 +1,9 @@
-// backend/src/routes/supplyChainRoutes.ts
 import express, { Router } from 'express';
+import { getClients, addClient } from '../controllers/clientController';
 
 const router: Router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: 'Supply chain route works!' });
-});
+router.get('/', getClients);
+router.post('/', addClient);
 
 export default router;
