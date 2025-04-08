@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 
 const Login: React.FC = () => {
   return (
@@ -54,8 +55,8 @@ const Login: React.FC = () => {
           </form>
 
           <div className="text-center text-sm text-gray-500">
-            Don’t have an account yet? <span className="text-green-600 cursor-pointer">Sign Up</span>
-          </div>
+  Don’t have an account yet? <Link to="/signup" className="text-green-600 hover:underline">Sign Up</Link>
+</div>
         </div>
       </div>
     </div>
