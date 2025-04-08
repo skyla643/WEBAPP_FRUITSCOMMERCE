@@ -33,7 +33,8 @@ const Dashboard: React.FC = () => {
               <Link to="/market-data" className="hover:text-accentOrange">
                 Market Data
               </Link>
-            </li>
+            </li> 
+            <li><Link to="/clients">Clients</Link></li>
           </ul>
         </nav>
       </header>

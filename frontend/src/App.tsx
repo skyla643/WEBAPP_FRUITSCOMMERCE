@@ -20,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/supply-chain" element={<SupplyChain />} />
         <Route path="/market-data" element={<MarketData />} />
         <Route path="*" element={<Login />} />
+        <Route path="/clients" element={<ClientManager />} />
       </Routes>
     </Router>
   );
