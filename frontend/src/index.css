@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ Fix full height and layout issues */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* 💫 Custom animation (for loading screen) */
 @keyframes spin-slow {
   0% {
@@ -11,6 +20,7 @@
     transform: rotate(360deg);
   }
 }
+
 .animate-spin-slow {
   animation: spin-slow 3s linear infinite;
 }
