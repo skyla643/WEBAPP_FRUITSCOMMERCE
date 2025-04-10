@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent';
 import Navbar from './Navbar';
 import { FaLeaf, FaChartLine, FaDownload, FaMapMarkedAlt } from 'react-icons/fa';
@@ -7,18 +7,10 @@ import { FaLeaf, FaChartLine, FaDownload, FaMapMarkedAlt } from 'react-icons/fa'
 const Dashboard: React.FC = () => {
   const isAdminOrStaff = true;
   const location = useLocation();
+  const navigate = useNavigate();
   const initialLatitude = -34.6037;
   const initialLongitude = -58.3816;
   const initialZoom = 10;
-
-  // Sample data
-  const regions = [
-    { name: "OF BROADWAY", subregion: "Delta del Porno", value: "2.00m", status: "€ Transición" },
-    { name: "DINARY", subregion: "Portado de Territorio", value: "1.00m", status: "€ Transición" },
-    { name: "SALVAR", subregion: "Cervas", value: "3.00m", status: "€ Transición" },
-    { name: "RANDO", subregion: "Segunda Europa", value: "Delta de Formento", status: "" },
-    { name: "TURBAN", subregion: "Vuelta", value: "4.00m", status: "€ Transición" },
-  ];
 
   // Check if we're on the main dashboard or a sub-route
   const isDashboardHome = location.pathname === '/dashboard';
@@ -40,7 +32,10 @@ const Dashboard: React.FC = () => {
                     <FaMapMarkedAlt className="inline mr-2" /> Regional Overview Map
                   </h2>
                   <div className="flex space-x-2">
-                    <button className="px-3 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition flex items-center">
+                    <button 
+                      onClick={() => navigate('/dashboard/orchards')}
+                      className="px-3 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition flex items-center"
+                    >
                       <FaChartLine className="mr-1" /> View All
                     </button>
                     <button className="px-3 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition flex items-center">
@@ -180,7 +175,10 @@ const Dashboard: React.FC = () => {
                   <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
                     Top Producing Regions
                   </h2>
-                  <button className="text-xs text-orange-500 hover:text-orange-700">
+                  <button 
+                    onClick={() => navigate('/dashboard/orchards')}
+                    className="text-xs text-orange-500 hover:text-orange-700"
+                  >
                     View All →
                   </button>
                 </div>
