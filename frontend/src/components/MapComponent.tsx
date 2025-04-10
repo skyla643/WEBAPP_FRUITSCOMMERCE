@@ -1,24 +1,24 @@
-// frontend/src/components/MapComponent.tsx
+// frontend/src/components/MapComponent.tsx (Corrected useEffect)
 import React, { useEffect, useRef } from 'react';
-import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 const MapComponent: React.FC = () => {
-  const mapRef = useRef<HTMLElement | null>(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!mapRef.current) return; // Ensure ref is attached
+    if (!mapRef.current) return;
 
-    // Initialize the map
-    const map = L.map(mapRef.current).setView([-34.397, 150.644], 8); // Set initial view
+    const map = L.map(mapRef.current).setView([-34.397, 150.644], 8);
 
-    // Add OpenStreetMap tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Clean up the map instance when the component unmounts
-    return () => map.remove();
+    // Corrected cleanup function: return a function that calls map.remove()
+    return () => {
+      map.remove();
+    };
   }, []);
 
   return (
