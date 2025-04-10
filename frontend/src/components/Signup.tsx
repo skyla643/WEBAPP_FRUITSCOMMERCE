@@ -1,10 +1,26 @@
-// frontend/src/components/Signup.tsx
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'; // Import useState
+import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    // In a real application, you would make an API call here to register the user
+    console.log('Signing up with:', { name, email, password });
+
+    // Simulate successful signup
+    setTimeout(() => {
+      // After successful registration, navigate to the dashboard
+      navigate('/dashboard');
+    }, 1000); // Simulate a 1-second delay for the API call
+  };
+
   return (
     <div className="flex h-screen font-sans">
       {/* 🍋 Lemon video on the left */}
@@ -36,13 +52,15 @@ const Signup: React.FC = () => {
             <div className="h-[2px] w-1/2 bg-gradient-to-r from-orange-300 to-yellow-400 rounded-full mt-1" />
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}> {/* Add onSubmit handler */}
             <div>
               <label className="block text-sm font-medium text-gray-700">Name</label>
               <input
                 type="text"
                 placeholder="Your full name"
                 className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
@@ -51,6 +69,8 @@ const Signup: React.FC = () => {
                 type="email"
                 placeholder="Enter your email"
                 className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -59,6 +79,8 @@ const Signup: React.FC = () => {
                 type="password"
                 placeholder="Create a password"
                 className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
