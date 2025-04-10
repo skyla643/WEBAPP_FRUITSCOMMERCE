@@ -1,78 +1,77 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeIcon, ChartBarIcon, TruckIcon, CurrencyDollarIcon, UsersIcon } from '@heroicons/react/24/outline'; // Example icons
+import { LemonIcon, OrangeIcon } from '@heroicons/react/outline'; // Correct import path
 
 interface NavbarProps {
-  isAdminOrStaff: boolean;
+  isAdminOrStaff: boolean; // Define isAdminOrStaff prop
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
+const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => { // Use NavbarProps
   return (
-    <nav className="bg-[#FF9800] text-white shadow-md h-16 flex items-center"> {/* Orange, height, center vertically */}
-      <div className="container mx-auto flex items-center justify-between px-6">
-        <div className="text-2xl font-bold font-arial">Citrus Argentina</div> {/* Font Arial */}
+    <nav className="bg-white shadow-md">
+      <div className="container mx-auto flex items-center justify-between px-6 py-4">
+        <div className="flex items-center">
+          <LemonIcon className="h-6 w-6 mr-2 text-yellow-500" />
+          <OrangeIcon className="h-6 w-6 mr-2 text-orange-500" />
+          <div className="text-2xl font-bold font-arial">Citrus Argentina</div>
+        </div>
         <ul className="flex space-x-8">
           <li>
             <NavLink
-              to="/dashboard/orchards"
+              to="/dashboard"
               className={({ isActive }) =>
-                isActive ? 'text-[#FFD700] font-semibold underline' : 'hover:text-orange-200 flex items-center'
+                isActive ? 'text-orange-500 font-semibold underline' : 'hover:text-orange-200'
               }
             >
-              <HomeIcon className="h-5 w-5 mr-2" /> {/* Icon */}
-              Orchards
+              Dashboard
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/pest-detection"
+              to="/profile"
               className={({ isActive }) =>
-                isActive ? 'text-[#FFD700] font-semibold underline' : 'hover:text-orange-200 flex items-center'
+                isActive ? 'text-orange-500 font-semibold underline' : 'hover:text-orange-200'
               }
             >
-              <ChartBarIcon className="h-5 w-5 mr-2" /> {/* Icon */}
-              Pest Detection
+              Profile
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/supply-chain"
+              to="/settings"
               className={({ isActive }) =>
-                isActive ? 'text-[#FFD700] font-semibold underline' : 'hover:text-orange-200 flex items-center'
+                isActive ? 'text-orange-500 font-semibold underline' : 'hover:text-orange-200'
               }
             >
-              <TruckIcon className="h-5 w-5 mr-2" /> {/* Icon */}
-              Supply Chain
+              Settings
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/market-data"
+              to="/logout"
               className={({ isActive }) =>
-                isActive ? 'text-[#FFD700] font-semibold underline' : 'hover:text-orange-200 flex items-center'
+                isActive ? 'text-orange-500 font-semibold underline' : 'hover:text-orange-200'
+              }
+            >
+              Logout
+            </NavLink>
+          </li>
+          {isAdminOrStaff && (
+            <li>
+              <NavLink
+                to="/clients"
+                className={({ isActive }) =>
+                  isActive ? 'text-orange-500 font-semibold underline' : 'hover:text-orange-200'
                 }
-                >
-                <CurrencyDollarIcon className="h-5 w-5 mr-2" /> {/* Icon */}
-                Market Data
+              >
+                Clients
               </NavLink>
             </li>
-            {isAdminOrStaff && (
-              <li>
-                <NavLink
-                  to="/dashboard/clients"
-                  className={({ isActive }) =>
-                    isActive ? 'text-[#FFD700] font-semibold underline' : 'hover:text-orange-200 flex items-center'
-                  }
-                >
-                  <UsersIcon className="h-5 w-5 mr-2" /> {/* Icon */}
-                  Clients
-                </NavLink>
-              </li>
-            )}
-          </ul>
-        </div>
-      </nav>
-    );
-  };
+          )}
+        </ul>
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;
