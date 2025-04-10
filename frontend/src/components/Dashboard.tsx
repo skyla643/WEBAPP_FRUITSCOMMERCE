@@ -1,60 +1,53 @@
-// src/components/Dashboard.tsx
+// frontend/src/components/Dashboard.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+
+const containerStyle = {
+  width: '100%',
+  height: '100%'
+};
+
+const center = {
+  lat: -34.397, // Default center (e.g., Australia) - Change this!
+  lng: 150.644
+};
 
 const Dashboard: React.FC = () => {
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: 'google-map',
+    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY" // Replace with your API key
+  });
+
+  if (loadError) {
+    return <div>Error loading Google Maps</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-lightGray">
-      <header className="bg-earthGreen text-white py-4 px-8 flex justify-between items-center shadow-custom-light">
-        <h1 className="text-2xl font-heading">Citrus Argentina</h1>
-        <nav>
-          <ul className="flex space-x-4">
-            <li>
-              <Link to="/dashboard" className="hover:text-accentOrange">
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/orchards" className="hover:text-accentOrange">
-                Orchards
-              </Link>
-            </li>
-            <li>
-              <Link to="/pest-detection" className="hover:text-accentOrange">
-                Pest Detection
-              </Link>
-            </li>
-            <li>
-              <Link to="/supply-chain" className="hover:text-accentOrange">
-                Supply Chain
-              </Link>
-            </li>
-            <li>
-              <Link to="/market-data" className="hover:text-accentOrange">
-                Market Data
-              </Link>
-            </li> 
-            <li><Link to="/clients">Clients</Link></li>
-          </ul>
-        </nav>
-      </header>
-      <main className="p-8">
-        <h2 className="text-xl font-heading text-darkBlue mb-4">
-          Welcome, test1234
-        </h2>
-        {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg shadow-custom-light p-4">
-            <h3 className="text-lg font-bold mb-2">Orchard Monitoring</h3>
-            <p>Salta Estate — Soil Moisture: 65%, Temperature: 24°C</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-custom-light p-4">
-            <h3 className="text-lg font-bold mb-2">Supply Chain</h3>
-            <p>Shipment #1: In Transit, 2500 units, ETA 3/11/2025</p>
-          </div>
-          {/* Add additional cards as needed */}
+    <div className="flex h-screen bg-gray-100">
+      {/* Map Area */}
+      <div className="w-2/3 bg-white shadow-md rounded-lg p-4">
+        <h2 className="text-xl font-semibold mb-2">Regional Overview Map</h2>
+        <div className="h-full rounded-lg border-gray-300 border">
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={8}
+            >
+              { /* Child components, such as markers, go here */ }
+            </GoogleMap>
+          ) : (
+            <div>Loading Map...</div>
+          )}
         </div>
-      </main>
+      </div>
+
+      {/* Statistics Panel */}
+      <div className="w-1/3 bg-white shadow-md rounded-lg p-4 ml-4">
+        <h2 className="text-xl font-semibold mb-2">Regional Statistics</h2>
+        {/* Statistics will go here */}
+        <p className="text-gray-500 italic text-center mt-1/2">Loading Statistics...</p>
+      </div>
     </div>
   );
 };
