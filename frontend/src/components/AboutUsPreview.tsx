@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaLeaf, FaChartLine, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { GiSqueezedOrange } from 'react-icons/gi';
+import { GiOrange } from 'react-icons/gi';
 
 const AboutUsPreview: React.FC = () => {
   return (
@@ -30,8 +30,8 @@ const AboutUsPreview: React.FC = () => {
             <div className="flex items-center">
               <motion.div
                 animate={{ 
-                  scale: [1, 0.9, 1],
-                  rotate: [0, 10, -10, 0]
+                  scale: [1, 0.95, 1],
+                  rotate: [0, 5, -5, 0]
                 }}
                 transition={{ 
                   repeat: Infinity,
@@ -40,7 +40,7 @@ const AboutUsPreview: React.FC = () => {
                 }}
                 className="mr-3 text-3xl text-yellow-500"
               >
-                <GiSqueezedOrange />
+                <GiOrange />
               </motion.div>
               <span className="text-3xl font-bold text-green-600">SQUEEZE</span>
             </div>
