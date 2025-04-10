@@ -8,7 +8,7 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -34.397, // Default center (e.g., Australia) - Change this!
+  lat: -34.397,
   lng: 150.644
 };
 
@@ -42,12 +42,13 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Statistics Panel */}
+      {/* Statistics Panel
       <div className="w-1/3 bg-white shadow-md rounded-lg p-4 ml-4">
         <h2 className="text-xl font-semibold mb-2">Regional Statistics</h2>
-        {/* Statistics will go here */}
+        {/* Statistics will go here * /}
         <p className="text-gray-500 italic text-center mt-1/2">Loading Statistics...</p>
       </div>
+      */}
     </div>
   );
 };
