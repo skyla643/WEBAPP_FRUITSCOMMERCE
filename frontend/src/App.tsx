@@ -1,11 +1,10 @@
-// frontend/src/App.tsx (Minimal)
+// frontend/src/App.tsx (Temporary Simplification)
 import React from 'react';
+import Dashboard from './components/Dashboard';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Hello from App!</h1>
-    </div>
+    <Dashboard />
   );
 };
 
