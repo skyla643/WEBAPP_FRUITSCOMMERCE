@@ -10,11 +10,15 @@ import PestDetection from './components/PestDetection';
 import SupplyChain from './components/SupplyChain';
 import MarketData from './components/MarketData';
 import ClientManager from './components/ClientManager';
+import AboutUsPreview from './components/AboutUsPreview';
 
 const App: React.FC = () => {
   return (
+    
     <Router>
       <Routes>
+         {/* Make AboutUsPreview your landing page */}
+        <Route path="/" element={<AboutUsPreview />} />
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />}>

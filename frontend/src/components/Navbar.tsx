@@ -79,6 +79,17 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
               >
                 Clients
               </NavLink>
+              {/* Add this to your nav links */}
+<li>
+  <NavLink
+    to="/"
+    className={({ isActive }) =>
+      isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
+    }
+  >
+    About
+  </NavLink>
+</li>
             </li>
           )}
         </ul>
