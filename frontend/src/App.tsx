@@ -1,7 +1,5 @@
-// frontend/src/App.tsx (Nested Routes)
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
@@ -14,12 +12,10 @@ import AboutUsPreview from './components/AboutUsPreview';
 
 const App: React.FC = () => {
   return (
-    
     <Router>
       <Routes>
-         {/* Make AboutUsPreview your landing page */}
         <Route path="/" element={<AboutUsPreview />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="orchards" element={<Orchards />} />
@@ -28,7 +24,7 @@ const App: React.FC = () => {
           <Route path="market-data" element={<MarketData />} />
           <Route path="clients" element={<ClientManager />} />
         </Route>
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

@@ -9,26 +9,30 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
   return (
     <nav className="bg-white border-b-2 border-transparent bg-gradient-to-r from-orange-100 to-yellow-100">
       <div className="container mx-auto flex items-center justify-between px-6 py-3">
-        {/* Wrap logo in NavLink to make it clickable */}
         <NavLink 
           to="/dashboard" 
           className="flex items-center hover:opacity-80 transition-opacity"
         >
           <div className="flex items-center">
-            <div className="h-5 w-5 text-yellow-500">
-              🍋
-            </div>
-            <div className="h-5 w-5 text-orange-500">
-              🍊
-            </div>
+            <div className="h-5 w-5 text-yellow-500">🍋</div>
+            <div className="h-5 w-5 text-orange-500">🍊</div>
             <div className="ml-2 text-xl font-semibold font-arial text-gray-800">
               Citrus Argentina
             </div>
           </div>
         </NavLink>
 
-        {/* Rest remains EXACTLY the same */}
         <ul className="flex space-x-6">
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
+              }
+            >
+              About
+            </NavLink>
+          </li>
           <li>
             <NavLink
               to="/dashboard/orchards"
@@ -79,17 +83,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
               >
                 Clients
               </NavLink>
-              {/* Add this to your nav links */}
-<li>
-  <NavLink
-    to="/"
-    className={({ isActive }) =>
-      isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
-    }
-  >
-    About
-  </NavLink>
-</li>
             </li>
           )}
         </ul>
