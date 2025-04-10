@@ -7,7 +7,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
   return (
-    <nav className="bg-white border-b border-gray-200"> {/* Removed shadow, added subtle bottom border */}
+    <nav className="bg-white border-b-2 border-transparent bg-gradient-to-r from-orange-100 to-yellow-100">
       <div className="container mx-auto flex items-center justify-between px-6 py-3"> {/* Reduced vertical padding */}
         <div className="flex items-center">
           <div className="h-5 w-5 text-yellow-500"> {/* Slightly smaller emojis */}
