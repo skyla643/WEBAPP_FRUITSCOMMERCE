@@ -21,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
         <ul className="flex space-x-6"> {/* Reduced horizontal spacing between links */}
           <li>
             <NavLink
-              to="/orchards"
+              to="/dashboard/orchards"
               className={({ isActive }) =>
                 isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400' /* Less prominent underline */
               }
@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
           </li>
           <li>
             <NavLink
-              to="/pest-detection"
+              to="/dashboard/pest-detection"
               className={({ isActive }) =>
                 isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
               }
@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
           </li>
           <li>
             <NavLink
-              to="/supply-chain"
+              to="/dashboard/supply-chain"
               className={({ isActive }) =>
                 isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
               }
@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
           </li>
           <li>
             <NavLink
-              to="/market-data"
+              to="/dashboard/market-data"
               className={({ isActive }) =>
                 isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
               }
@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdminOrStaff }) => {
           </li>
           <li>
             <NavLink
-              to="/clients"
+              to="/dashboard/clients"
               className={({ isActive }) =>
                 isActive ? 'text-orange-500 font-semibold' : 'text-gray-600 hover:text-orange-400'
               }
