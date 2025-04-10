@@ -17,7 +17,8 @@ const Dashboard: React.FC = () => {
         {/* Map Area */}
         <div className="w-2/3 bg-white shadow-lg rounded-2xl p-6 mr-8 border border-gray-100">
           <h2 className="text-2xl font-semibold mb-6 text-[#8BC34A]">Regional Overview Map</h2>
-          <div className="h-full rounded-xl border border-gray-200">
+          <div className="rounded-xl border border-gray-200" style={{ height: 'calc(100% - 40px)' }}>
+            {/* Adjusted height to account for the h2 margin */}
             <MapComponent
               latitude={initialLatitude}
               longitude={initialLongitude}
