@@ -1,163 +1,216 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaLeaf, FaChartLine, FaTruck, FaDollarSign, FaUsers, FaFemale, FaGlobeAmericas, FaHandsHelping } from 'react-icons/fa';
+import { FaArrowRight, FaLeaf, FaChartLine, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const AboutUsPreview: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation Placeholder (Matches Screenshot Reference) */}
-      <nav className="bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center space-x-8">
-          <span className="text-2xl font-bold text-orange-500">Squeeze</span>
-          <div className="hidden md:flex space-x-6">
-            <Link to="/shop" className="text-gray-700 hover:text-orange-500">Shop</Link>
-            <Link to="/about" className="font-medium text-orange-500">About Us</Link>
-            <Link to="/discounts" className="text-gray-700 hover:text-orange-500">Discounts</Link>
-            <Link to="/contact" className="text-gray-700 hover:text-orange-500">Contact Us</Link>
+    <div className="min-h-screen bg-white font-sans">
+      {/* Video Background Hero */}
+      <div className="relative h-screen overflow-hidden">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="absolute z-0 w-full h-full object-cover"
+          poster="https://example.com/citrus-video-poster.jpg" // Fallback image
+        >
+          <source src="https://example.com/citrus-orchard.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-orange-500/20 to-yellow-500/10 z-1"></div>
+        
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col">
+          {/* Navigation */}
+          <nav className="px-8 py-6 flex justify-between items-center bg-white/80 backdrop-blur-sm">
+            <span className="text-3xl font-bold text-orange-500">SQUEEZE</span>
+            <div className="flex items-center space-x-6">
+              <Link to="/about" className="font-medium text-orange-600">About Us</Link>
+              <Link to="/register" className="px-5 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 text-white rounded-full hover:shadow-lg transition-all">
+                Register
+              </Link>
+            </div>
+          </nav>
+
+          {/* Hero Content */}
+          <div className="flex-grow flex flex-col justify-center items-center text-center px-4">
+            <motion.h1 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-6xl md:text-8xl font-bold text-white drop-shadow-lg mb-6"
+            >
+              Argentina's Citrus Revolution
+            </motion.h1>
+            <motion.p 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-xl md:text-2xl text-white/90 max-w-2xl mb-10 drop-shadow-md"
+            >
+              Vibrant, sustainable citrus production powered by cutting-edge technology
+            </motion.p>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <Link
+                to="/login"
+                className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-orange-500 to-yellow-500 hover:shadow-xl transition-all"
+              >
+                Join Our Network <FaArrowRight className="ml-3" />
+              </Link>
+            </motion.div>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <Link to="/cart" className="text-gray-700 hover:text-orange-500">My Cart</Link>
-          <Link to="/register" className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600">Register</Link>
-        </div>
-      </nav>
+      </div>
 
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative overflow-hidden bg-gradient-to-b from-yellow-50 to-orange-50 pb-20"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10 pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32">
-            <div className="text-center">
-              <h1 className="text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500 sm:text-6xl lg:text-7xl">
-                Argentina's Citrus Revolution
-              </h1>
-              <p className="mt-6 max-w-lg mx-auto text-xl text-orange-800">
-                Vibrant, sustainable citrus production powered by cutting-edge technology
-              </p>
-              <div className="mt-10">
-                <Link
-                  to="/login"
-                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500"
-                >
-                  Join Our Network <FaArrowRight className="ml-3 -mr-1" />
-                </Link>
-              </div>
+      {/* About Section */}
+      <div className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-yellow-500 mb-6">
+            About Citrus Argentina
+          </h2>
+          <p className="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto">
+            Empowering Sustainable Citrus Farming Through Innovation
+          </p>
+        </div>
+
+        {/* Women-Led Section */}
+        <div className="grid md:grid-cols-2 gap-12 mb-24">
+          <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-10 rounded-3xl">
+            <h3 className="text-3xl font-bold text-orange-600 mb-6">A Women-Led Force for Change</h3>
+            <p className="text-lg text-gray-700 mb-6">
+              Certified <span className="font-bold">U.S. Organic</span> and <span className="font-bold">WMBE</span> (Women-Owned Minority Business Enterprise), we champion diversity in agriculture.
+            </p>
+            <ul className="space-y-4 text-lg">
+              <li className="flex items-start">
+                <span className="text-orange-500 mr-3">•</span>
+                <span>Inspiring women and minority groups in agribusiness</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-orange-500 mr-3">•</span>
+                <span>Providing resources and mentorship</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-orange-500 mr-3">•</span>
+                <span>Advocating for equitable technology access</span>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Image Placeholder */}
+          <div className="bg-orange-100 rounded-3xl flex items-center justify-center">
+            <div className="text-center p-10">
+              <div className="text-9xl mb-6">👩‍🌾</div>
+              <p className="text-orange-600 font-medium">Women-led agriculture innovation</p>
             </div>
           </div>
         </div>
-      </motion.div>
 
-      {/* Mission Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500 sm:text-4xl">
-              About Citrus Argentina
-            </h2>
-            <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-600">
-              Empowering Sustainable Citrus Farming Through Innovation
-            </p>
-          </div>
-
-          <div className="mt-16 grid gap-16 lg:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
-            {/* Who We Are */}
-            <div className="bg-orange-50 rounded-xl p-8">
-              <div className="flex items-center">
-                <div className="flex-shrink-0 bg-orange-100 rounded-full p-4 text-orange-500">
-                  <FaFemale className="h-6 w-6" />
+        {/* What We Offer */}
+        <div className="mb-24">
+          <h3 className="text-3xl md:text-4xl font-bold text-center text-orange-600 mb-16">What We Offer</h3>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Farmers */}
+            <div className="border-2 border-orange-200 rounded-3xl p-8 hover:shadow-lg transition-all">
+              <div className="flex items-center mb-6">
+                <div className="bg-orange-100 p-3 rounded-full mr-4">
+                  <FaLeaf className="text-orange-500 text-xl" />
                 </div>
-                <h3 className="ml-4 text-xl font-bold text-gray-900">A Women-Led Force for Change</h3>
+                <h4 className="text-2xl font-bold text-gray-800">For Farmers</h4>
               </div>
-              <p className="mt-4 text-gray-600">
-                Certified <span className="font-semibold">U.S. Organic</span> and <span className="font-semibold">WMBE</span> (Women-Owned Minority Business Enterprise), we champion diversity in agriculture.
-              </p>
-              <ul className="mt-4 space-y-3">
+              <ul className="space-y-4 text-gray-700">
                 <li className="flex items-start">
-                  <span className="flex-shrink-0 text-orange-500">•</span>
-                  <span className="ml-2 text-gray-600">Inspiring women and minority groups in agribusiness</span>
+                  <span className="text-orange-500 mr-3">•</span>
+                  <span>AI-Powered Insights: Pest detection & yield optimization</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="flex-shrink-0 text-orange-500">•</span>
-                  <span className="ml-2 text-gray-600">Providing resources and mentorship</span>
+                  <span className="text-orange-500 mr-3">•</span>
+                  <span>Supply Chain Tools with blockchain transparency</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="flex-shrink-0 text-orange-500">•</span>
-                  <span className="ml-2 text-gray-600">Advocating for equitable technology access</span>
+                  <span className="text-orange-500 mr-3">•</span>
+                  <span>Organic Certification Support</span>
                 </li>
               </ul>
             </div>
-
-            {/* What We Offer */}
-            <div className="bg-yellow-50 rounded-xl p-8">
-              <div className="flex items-center">
-                <div className="flex-shrink-0 bg-yellow-100 rounded-full p-4 text-yellow-500">
-                  <FaGlobeAmericas className="h-6 w-6" />
+            
+            {/* Buyers */}
+            <div className="border-2 border-yellow-200 rounded-3xl p-8 hover:shadow-lg transition-all">
+              <div className="flex items-center mb-6">
+                <div className="bg-yellow-100 p-3 rounded-full mr-4">
+                  <FaChartLine className="text-yellow-500 text-xl" />
                 </div>
-                <h3 className="ml-4 text-xl font-bold text-gray-900">What We Offer</h3>
+                <h4 className="text-2xl font-bold text-gray-800">For Buyers & Partners</h4>
               </div>
-              <div className="mt-4">
-                <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FaLeaf className="mr-2 text-green-500" /> For Farmers
-                </h4>
-                <ul className="mt-2 space-y-2 text-gray-600">
-                  <li>• AI-Powered Insights: Pest detection & yield optimization</li>
-                  <li>• Supply Chain Tools with blockchain transparency</li>
-                  <li>• Organic Certification Support</li>
-                </ul>
-              </div>
-              <div className="mt-6">
-                <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FaChartLine className="mr-2 text-blue-500" /> For Buyers & Partners
-                </h4>
-                <ul className="mt-2 space-y-2 text-gray-600">
-                  <li>• Premium Organic Citrus from vetted farms</li>
-                  <li>• Real-Time Market Data analytics</li>
-                  <li>• Diverse Supplier Network prioritizing minorities</li>
-                </ul>
-              </div>
+              <ul className="space-y-4 text-gray-700">
+                <li className="flex items-start">
+                  <span className="text-yellow-500 mr-3">•</span>
+                  <span>Premium Organic Citrus from vetted farms</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-500 mr-3">•</span>
+                  <span>Real-Time Market Data analytics</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-500 mr-3">•</span>
+                  <span>Diverse Supplier Network prioritizing minorities</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Impact Section */}
-      <div className="py-16 bg-gradient-to-r from-orange-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500 sm:text-4xl">
-              Our Impact
-            </h2>
-          </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
+        {/* Impact Section */}
+        <div className="text-center mb-24">
+          <h3 className="text-3xl md:text-4xl font-bold text-orange-600 mb-16">Our Impact</h3>
+          
+          <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: <FaUsers className="h-8 w-8" />, stat: "1,200+ Farms", desc: "empowered with smart technology" },
-              { icon: <FaDollarSign className="h-8 w-8" />, stat: "30% Increase", desc: "in profits for partner growers" },
-              { icon: <FaHandsHelping className="h-8 w-8" />, stat: "500+ Women", desc: "trained in agtech and business" }
+              { value: "1,200+", label: "Farms empowered with smart technology" },
+              { value: "30%", label: "Increase in profits for partner growers" },
+              { value: "500+", label: "Women trained in agtech and business" }
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-xl p-8 text-center shadow-lg">
-                <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-orange-100 text-orange-500">
-                  {item.icon}
-                </div>
-                <h3 className="mt-4 text-2xl font-bold text-gray-900">{item.stat}</h3>
-                <p className="mt-2 text-gray-600">{item.desc}</p>
+              <div key={index} className="bg-gradient-to-b from-orange-50 to-white p-8 rounded-3xl hover:shadow-md transition-all">
+                <div className="text-5xl font-bold text-orange-500 mb-4">{item.value}</div>
+                <p className="text-gray-700">{item.label}</p>
               </div>
             ))}
           </div>
-          <div className="mt-12 text-center">
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500"
-            >
-              Join the Movement <FaArrowRight className="ml-3 -mr-1" />
-            </Link>
-          </div>
         </div>
       </div>
+
+      {/* Footer with Social */}
+      <footer className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h3 className="text-3xl font-bold mb-8">Join the Movement</h3>
+          <div className="flex justify-center space-x-6 mb-8">
+            <a 
+              href="https://www.instagram.com/citrusargentinacorp/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition-all"
+            >
+              <FaInstagram className="text-xl" />
+            </a>
+            <a 
+              href="https://www.linkedin.com/company/101002187/admin/dashboard/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition-all"
+            >
+              <FaLinkedin className="text-xl" />
+            </a>
+          </div>
+          <p className="text-white/80">© {new Date().getFullYear()} Citrus Argentina. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
