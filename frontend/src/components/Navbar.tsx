@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // Removed unused NavLinkProps
 import {
   HomeIcon,
   ChartBarIcon,
