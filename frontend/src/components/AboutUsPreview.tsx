@@ -10,14 +10,14 @@ const AboutUsPreview: React.FC = () => {
       {/* Video Background Hero */}
       <div className="relative h-screen overflow-hidden">
         <video 
-          autoPlay 
-          loop 
-          muted 
+          autoPlay
+          loop
+          muted
           playsInline
           className="absolute z-0 w-full h-full object-cover"
-          poster="https://example.com/citrus-video-poster.jpg"
         >
-          <source src="https://example.com/citrus-orchard.mp4" type="video/mp4" />
+          <source src="/sunnyorchard.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
         </video>
         
         {/* Overlay */}
