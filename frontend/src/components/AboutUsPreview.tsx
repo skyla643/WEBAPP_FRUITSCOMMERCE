@@ -23,7 +23,7 @@ const AboutUsPreview: React.FC = () => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-green-700/20 to-yellow-500/20 z-1"></div>
 
-        {/* Content */}
+        {/* Content within Hero */}
         <div className="relative z-10 h-full flex flex-col">
           {/* Navigation */}
           <nav className="px-8 py-6 flex justify-between items-center bg-white/80 backdrop-blur-sm">
@@ -80,7 +80,7 @@ const AboutUsPreview: React.FC = () => {
         </div>
       </div>
 
-      {/* About Section */}
+      {/* About Section (Now a sibling of the hero) */}
       <div className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-yellow-500 mb-6">
