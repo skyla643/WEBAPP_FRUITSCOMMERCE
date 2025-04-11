@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent';
 import Navbar from './Navbar';
-import { FaLeaf, FaChartLine, FaDownload, FaMapMarkedAlt, FaSyncAlt } from 'react-icons/fa';
+import { FaLeaf, FaChartLine, FaMapMarkedAlt, FaSyncAlt } from 'react-icons/fa';
 import Spinner from './Spinner';
 
+// Interfaces
 interface RegionData {
+  id: string;
   region: string;
   yield: string;
   delta: string;
   color: string;
+  coordinates?: [number, number];
 }
 
 interface FertilizerZone {
+  id: string;
   zone: string;
   rate: string;
   area: string;
@@ -20,376 +24,519 @@ interface FertilizerZone {
 }
 
 interface HealthStatus {
+  id: string;
   label: string;
   value: string;
   color: string;
 }
 
-const Dashboard: React.FC = () => {
-  const isAdminOrStaff = true;
-  const location = useLocation();
-  const navigate = useNavigate();
-  const initialLatitude = -34.6037;
-  const initialLongitude = -58.3816;
-  const initialZoom = 10;
+interface ApiResponse<T> {
+  data: T;
+  timestamp: string;
+  status: 'success' | 'error';
+  message?: string;
+}
 
-  // State for live data
-  const [regionalData, setRegionalData] = useState<RegionData[]>([]);
-  const [fertilizerData, setFertilizerData] = useState<{
+interface DashboardState {
+  regionalData: RegionData[];
+  fertilizerData: {
     standardRate: string;
     zones: number;
     zonesData: FertilizerZone[];
     totalNeeded: string;
-  } | null>(null);
-  const [healthStatus, setHealthStatus] = useState<HealthStatus[]>([]);
-  const [loading, setLoading] = useState({
-    map: true,
-    regions: true,
-    fertilizer: true,
-    health: true
-  });
-  const [error, setError] = useState({
-    map: '',
-    regions: '',
-    fertilizer: ''
-  });
-  const [isLive, setIsLive] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("TUCUMÁN");
+  } | null;
+  healthStatus: HealthStatus[];
+  loading: {
+    map: boolean;
+    regions: boolean;
+    fertilizer: boolean;
+    health: boolean;
+  };
+  error: {
+    map: string;
+    regions: string;
+    fertilizer: string;
+  };
+  isLive: boolean;
+  selectedRegion: string;
+}
 
-  const isDashboardHome = location.pathname === '/dashboard';
+// Mock Data
+const MOCK_YIELD_DATA: RegionData[] = [
+  {
+    id: '1',
+    region: "TUCUMÁN",
+    yield: "24T/ha",
+    delta: "+12%",
+    color: "text-green-500",
+    coordinates: [-65.2, -26.8]
+  },
+  {
+    id: '2',
+    region: "SALTA",
+    yield: "18T/ha",
+    delta: "+8%",
+    color: "text-green-500",
+    coordinates: [-65.4, -24.8]
+  },
+  {
+    id: '3',
+    region: "JUJUY",
+    yield: "15T/ha",
+    delta: "-3%",
+    color: "text-orange-500",
+    coordinates: [-65.3, -23.7]
+  }
+];
 
-  // Mock data fallback
-  const mockYieldData: RegionData[] = [
-    { region: "TUCUMÁN", yield: "24T/ha", delta: "+12%", color: "text-green-500" },
-    { region: "SALTA", yield: "18T/ha", delta: "+8%", color: "text-green-500" },
-    { region: "JUJUY", yield: "15T/ha", delta: "-3%", color: "text-orange-500" }
-  ];
+const MOCK_FERTILIZER_DATA = {
+  standardRate: "95 kg/ha",
+  zones: 3,
+  zonesData: [
+    {
+      id: '1',
+      zone: "Very High",
+      rate: "70 kg/ha",
+      area: "0.6 ha",
+      color: "bg-green-400"
+    },
+    {
+      id: '2',
+      zone: "High",
+      rate: "85 kg/ha",
+      area: "7.5 ha",
+      color: "bg-yellow-400"
+    },
+    {
+      id: '3',
+      zone: "Low",
+      rate: "110 kg/ha",
+      area: "8.4 ha",
+      color: "bg-orange-400"
+    }
+  ],
+  totalNeeded: "41,891kg"
+};
 
-  const mockFertilizerData = {
-    standardRate: "95 kg/ha",
-    zones: 3,
-    zonesData: [
-      { zone: "Very High", rate: "70 kg/ha", area: "0.6 ha", color: "bg-green-400" },
-      { zone: "High", rate: "85 kg/ha", area: "7.5 ha", color: "bg-yellow-400" },
-      { zone: "Low", rate: "110 kg/ha", area: "8.4 ha", color: "bg-orange-400" }
-    ],
-    totalNeeded: "41,891kg"
+const MOCK_HEALTH_STATUS: HealthStatus[] = [
+  {
+    id: '1',
+    label: "Disease-Free",
+    value: "92%",
+    color: "bg-green-400"
+  },
+  {
+    id: '2',
+    label: "Pest Incidence",
+    value: "5%",
+    color: "bg-yellow-400"
+  },
+  {
+    id: '3',
+    label: "Water Stress",
+    value: "3%",
+    color: "bg-orange-400"
+  }
+];
+
+// Components
+const FertilizerCard: React.FC<{
+  data: DashboardState['fertilizerData'];
+  loading: boolean;
+  error: string;
+}> = ({ data, loading, error }) => {
+  if (loading) return <Spinner />;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!data) return <div>No data available</div>;
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+          <FaLeaf className="inline mr-2" /> Fertilizer Optimization
+        </h2>
+        <button className="px-3 py-1 text-sm rounded-md bg-gradient-to-r from-orange-400 to-yellow-400 text-white hover:shadow-md hover:shadow-orange-200 transition">
+          Export VRA Map →
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="p-3 bg-yellow-50 rounded-lg">
+          <p className="text-sm text-yellow-700">Standard Rate</p>
+          <p className="text-lg font-bold text-orange-600">{data.standardRate}</p>
+        </div>
+        <div className="p-3 bg-orange-50 rounded-lg">
+          <p className="text-sm text-orange-700">Productivity Zones</p>
+          <p className="text-lg font-bold text-yellow-600">{data.zones} Levels</p>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {data.zonesData.map((item, idx) => (
+          <div key={item.id} className="p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg">
+            <div className="flex justify-between mb-1">
+              <span className="font-medium text-orange-800">{item.zone}</span>
+              <span className="font-bold">{item.rate}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>{item.area}</span>
+              <span className="font-semibold text-orange-600">Saved 15%</span>
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full mt-2">
+              <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${70 + idx * 15}%` }}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+        <p className="text-sm text-blue-800">
+          <span className="font-bold">Total needed:</span> {data.totalNeeded}
+          <span className="block text-xs">Without VRA: 68,110kg more</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const StatsToggle: React.FC = memo(() => (
+  <div className="flex border-b border-orange-100">
+    <button className="flex-1 px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 text-center">
+      Summary
+    </button>
+    <button className="flex-1 px-4 py-2 text-gray-500 hover:text-orange-400 text-center">
+      Detailed
+    </button>
+  </div>
+));
+
+const OrchardDistributionCard: React.FC<{
+  healthStatus: HealthStatus[];
+  loading: boolean;
+}> = memo(({ healthStatus, loading }) => {
+  if (loading) return <Spinner />;
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+      <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent mb-4">
+        Orchard Distribution
+      </h2>
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="p-3 bg-purple-50 rounded-lg">
+          <p className="text-sm text-purple-700">By Age</p>
+          <p className="text-lg font-bold text-purple-600">3 Groups</p>
+        </div>
+        <div className="p-3 bg-pink-50 rounded-lg">
+          <p className="text-sm text-pink-700">By Size</p>
+          <p className="text-lg font-bold text-pink-600">5 Tiers</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-sm font-medium text-orange-700 mb-2">Top Varieties</h3>
+          <div className="space-y-2">
+            {["Valencia Orange", "Eureka Lemon", "Meyer Lemon"].map((item, idx) => (
+              <div key={idx} className="flex justify-between">
+                <span className="text-gray-600">{item}</span>
+                <span className="font-medium">{15 - idx * 5}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium text-green-700 mb-2">Health Status</h3>
+          {healthStatus.map((item) => (
+            <div key={item.id} className="mb-2">
+              <div className="flex justify-between text-xs mb-1">
+                <span>{item.label}</span>
+                <span>{item.value}</span>
+              </div>
+              <div className="h-1.5 bg-gray-100 rounded-full">
+                <div className={`h-1.5 rounded-full ${item.color}`} style={{ width: item.value }}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+const TopProducersTable: React.FC<{
+  data: RegionData[];
+  loading: boolean;
+  error: string;
+}> = memo(({ data, loading, error }) => {
+  if (loading) return <Spinner />;
+  if (error) return <div className="text-red-500">{error}</div>;
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+          Top Producing Regions
+        </h2>
+        <button className="text-xs text-orange-500 hover:text-orange-700">
+          View All →
+        </button>
+      </div>
+
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left text-gray-500 border-b">
+            <th className="pb-2">Region</th>
+            <th className="pb-2 text-right">Yield</th>
+            <th className="pb-2 text-right">Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.id} className="border-b border-gray-100 hover:bg-orange-50">
+              <td className="py-2 font-medium">{row.region}</td>
+              <td className="py-2 text-right">{row.yield}</td>
+              <td className={`py-2 text-right ${row.color}`}>{row.delta}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+});
+
+const MapCard: React.FC<{
+  loading: boolean;
+  onRegionSelect: (region: string) => void;
+  onRefresh: () => void;
+}> = memo(({ loading, onRegionSelect, onRefresh }) => {
+  const navigate = useNavigate();
+  const MAP_CONFIG = {
+    initialLatitude: -34.6037,
+    initialLongitude: -58.3816,
+    initialZoom: 10
   };
 
-  const mockHealthStatus: HealthStatus[] = [
-    { label: "Disease-Free", value: "92%", color: "bg-green-400" },
-    { label: "Pest Incidence", value: "5%", color: "bg-yellow-400" },
-    { label: "Water Stress", value: "3%", color: "bg-orange-400" }
-  ];
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500">
+          <FaMapMarkedAlt className="inline mr-2" /> Regional Overview Map
+        </h2>
+        <div className="flex space-x-2">
+          <button 
+            onClick={() => navigate('/dashboard/orchards')}
+            className="px-3 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition flex items-center"
+          >
+            <FaChartLine className="mr-1" /> View All
+          </button>
+          <button 
+            onClick={onRefresh}
+            className="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition flex items-center"
+          >
+            <FaSyncAlt className="mr-1" /> Refresh
+          </button>
+        </div>
+      </div>
+      
+      <div className="rounded-xl overflow-hidden border border-orange-200" style={{ height: '400px' }}>
+        <MapComponent
+          latitude={MAP_CONFIG.initialLatitude}
+          longitude={MAP_CONFIG.initialLongitude}
+          zoom={MAP_CONFIG.initialZoom}
+          onRegionSelect={onRegionSelect}
+        />
+        {loading && (
+          <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center">
+            <Spinner className="text-orange-500" />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
 
-  // API health check
-  useEffect(() => {
-    const checkApi = async () => {
-      try {
-        await fetch('/api/health');
-        setIsLive(true);
-      } catch {
-        setIsLive(false);
-      }
-    };
-    checkApi();
-    const interval = setInterval(checkApi, 5000);
-    return () => clearInterval(interval);
-  }, []);
+const LiveStatusIndicator: React.FC<{ isLive: boolean }> = memo(({ isLive }) => (
+  <div className={`fixed top-4 right-4 z-50 px-3 py-1 rounded-full text-sm font-bold 
+    ${isLive ? 'bg-red-500 animate-pulse text-white' : 'bg-gray-500 text-white'}`}>
+    {isLive ? 'LIVE' : 'OFFLINE'}
+  </div>
+));
 
-  // Fetch data functions
-  const fetchRegionalYield = async () => {
-    try {
-      const response = await fetch('/api/regional-yield');
-      const data = await response.json();
-      setRegionalData(data);
-    } catch (err) {
-      setError(prev => ({ ...prev, regions: 'Failed to load yield data' }));
-      setRegionalData(mockYieldData);
-    } finally {
-      setLoading(prev => ({ ...prev, regions: false }));
-    }
+// Main Dashboard Component
+const Dashboard: React.FC = () => {
+  const MAP_CONFIG = {
+    initialLatitude: -34.6037,
+    initialLongitude: -58.3816,
+    initialZoom: 10,
+    refreshInterval: 30000 // 30 seconds
   };
 
-  const fetchFertilizerData = async () => {
-    try {
-      const response = await fetch(`/api/fertilizer?lat=${initialLatitude}&lng=${initialLongitude}`);
-      const data = await response.json();
-      setFertilizerData(data);
-    } catch (err) {
-      setError(prev => ({ ...prev, fertilizer: 'Failed to load fertilizer data' }));
-      setFertilizerData(mockFertilizerData);
-    } finally {
-      setLoading(prev => ({ ...prev, fertilizer: false }));
-    }
-  };
-
-  const fetchHealthStatus = async () => {
-    try {
-      const response = await fetch('/api/health-status');
-      const data = await response.json();
-      setHealthStatus(data);
-    } catch (err) {
-      setHealthStatus(mockHealthStatus);
-    } finally {
-      setLoading(prev => ({ ...prev, health: false }));
-    }
-  };
-
-  // Initial data load
-  useEffect(() => {
-    if (isDashboardHome) {
-      fetchRegionalYield();
-      fetchFertilizerData();
-      fetchHealthStatus();
-    }
-  }, [isDashboardHome]);
-
-  // Data refresh function
-  const refreshData = () => {
-    setLoading({
+  const [state, setState] = useState<DashboardState>({
+    regionalData: [],
+    fertilizerData: null,
+    healthStatus: [],
+    loading: {
       map: true,
       regions: true,
       fertilizer: true,
       health: true
-    });
-    fetchRegionalYield();
-    fetchFertilizerData();
-    fetchHealthStatus();
-  };
+    },
+    error: {
+      map: '',
+      regions: '',
+      fertilizer: ''
+    },
+    isLive: false,
+    selectedRegion: "TUCUMÁN"
+  });
 
-  // Region selection handler
-  const handleRegionSelect = (region: string) => {
-    setSelectedRegion(region);
-    // You can add additional logic here to handle the region selection
+  const { 
+    regionalData, 
+    fertilizerData, 
+    healthStatus, 
+    loading, 
+    error, 
+    isLive, 
+    selectedRegion 
+  } = state;
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isDashboardHome = location.pathname === '/dashboard';
+
+  const checkApiHealth = useCallback(async () => {
+    try {
+      const response = await fetch('/api/health');
+      if (!response.ok) throw new Error('API unavailable');
+      setState(prev => ({ ...prev, isLive: true }));
+    } catch (err) {
+      setState(prev => ({ ...prev, isLive: false }));
+    }
+  }, []);
+
+  const fetchData = useCallback(async <T,>(endpoint: string, mockData: T): Promise<T> => {
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const json: ApiResponse<T> = await response.json();
+      if (json.status !== 'success') throw new Error(json.message || 'API error');
+      return json.data;
+    } catch (err) {
+      console.error(`Failed to fetch ${endpoint}:`, err);
+      return mockData;
+    }
+  }, []);
+
+  const loadDashboardData = useCallback(async () => {
+    setState(prev => ({
+      ...prev,
+      loading: {
+        map: true,
+        regions: true,
+        fertilizer: true,
+        health: true
+      }
+    }));
+
+    try {
+      const [regions, fertilizer, health] = await Promise.all([
+        fetchData<RegionData[]>('/api/regional-yield', MOCK_YIELD_DATA),
+        fetchData<typeof MOCK_FERTILIZER_DATA>('/api/fertilizer', MOCK_FERTILIZER_DATA),
+        fetchData<HealthStatus[]>('/api/health-status', MOCK_HEALTH_STATUS)
+      ]);
+
+      setState(prev => ({
+        ...prev,
+        regionalData: regions,
+        fertilizerData: fertilizer,
+        healthStatus: health,
+        loading: {
+          map: false,
+          regions: false,
+          fertilizer: false,
+          health: false
+        },
+        error: {
+          map: '',
+          regions: '',
+          fertilizer: ''
+        }
+      }));
+    } catch (err) {
+      console.error('Dashboard data load failed:', err);
+      setState(prev => ({
+        ...prev,
+        error: {
+          map: 'Map data unavailable',
+          regions: 'Yield data unavailable',
+          fertilizer: 'Fertilizer data unavailable'
+        },
+        loading: {
+          map: false,
+          regions: false,
+          fertilizer: false,
+          health: false
+        }
+      }));
+    }
+  }, [fetchData]);
+
+  useEffect(() => {
+    const healthCheckInterval = setInterval(checkApiHealth, 5000);
+    return () => clearInterval(healthCheckInterval);
+  }, [checkApiHealth]);
+
+  useEffect(() => {
+    if (isDashboardHome) {
+      loadDashboardData();
+      const dataRefreshInterval = setInterval(loadDashboardData, MAP_CONFIG.refreshInterval);
+      return () => clearInterval(dataRefreshInterval);
+    }
+  }, [isDashboardHome, loadDashboardData, MAP_CONFIG.refreshInterval]);
+
+  const handleRegionSelect = useCallback((region: string) => {
+    setState(prev => ({ ...prev, selectedRegion: region }));
     console.log(`Region selected: ${region}`);
-  };
+  }, []);
+
+  const handleRefresh = useCallback(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 bg-fixed font-arial overflow-auto">
-      {/* Live Status Indicator */}
-      <div className={`fixed top-4 right-4 z-50 px-3 py-1 rounded-full text-sm font-bold 
-        ${isLive ? 'bg-red-500 animate-pulse text-white' : 'bg-gray-500 text-white'}`}>
-        {isLive ? 'LIVE' : 'OFFLINE'}
-      </div>
-
-      <Navbar isAdminOrStaff={isAdminOrStaff} />
+      <LiveStatusIndicator isLive={isLive} />
+      <Navbar isAdminOrStaff={true} />
 
       {isDashboardHome ? (
         <div className="flex-grow p-6 overflow-auto">
           <div className="flex flex-col w-full max-w-7xl mx-auto space-y-6 lg:space-y-0 lg:space-x-6 lg:flex-row">
-            {/* Left Column */}
             <div className="w-full lg:w-2/3 space-y-6">
-              {/* Map Card */}
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500">
-                    <FaMapMarkedAlt className="inline mr-2" /> Regional Overview Map
-                  </h2>
-                  <div className="flex space-x-2">
-                    <button 
-                      onClick={() => navigate('/dashboard/orchards')}
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition flex items-center"
-                    >
-                      <FaChartLine className="mr-1" /> View All
-                    </button>
-                    <button 
-                      onClick={refreshData}
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition flex items-center"
-                    >
-                      <FaSyncAlt className="mr-1" /> Refresh
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="rounded-xl overflow-hidden border border-orange-200" style={{ height: '400px' }}>
-                  <MapComponent
-                    latitude={initialLatitude}
-                    longitude={initialLongitude}
-                    zoom={initialZoom}
-                    onRegionSelect={handleRegionSelect}
-                  />
-                  {loading.map && (
-                    <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center">
-                      <Spinner className="text-orange-500" />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Fertilizer Card */}
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
-                {loading.fertilizer && (
-                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-                    <Spinner className="text-orange-500" />
-                  </div>
-                )}
-                {error.fertilizer && (
-                  <div className="absolute top-2 right-2 bg-red-100 text-red-600 px-2 py-1 text-xs rounded">
-                    {error.fertilizer}
-                  </div>
-                )}
-
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
-                    <FaLeaf className="inline mr-2" /> Fertilizer Optimization
-                  </h2>
-                  <button className="px-3 py-1 text-sm rounded-md bg-gradient-to-r from-orange-400 to-yellow-400 text-white hover:shadow-md hover:shadow-orange-200 transition">
-                    Export VRA Map →
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-sm text-yellow-700">Standard Rate</p>
-                    <p className="text-lg font-bold text-orange-600">
-                      {fertilizerData?.standardRate || 'Loading...'}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-orange-50 rounded-lg">
-                    <p className="text-sm text-orange-700">Productivity Zones</p>
-                    <p className="text-lg font-bold text-yellow-600">
-                      {fertilizerData?.zones || '0'} Levels
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  {(fertilizerData?.zonesData || []).map((item, idx) => (
-                    <div key={idx} className="p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg">
-                      <div className="flex justify-between mb-1">
-                        <span className="font-medium text-orange-800">{item.zone}</span>
-                        <span className="font-bold">{item.rate}</span>
-                      </div>
-                      <div className="flex justify-between text-sm text-gray-600">
-                        <span>{item.area}</span>
-                        <span className="font-semibold text-orange-600">Saved 15%</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full mt-2">
-                        <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${70 + idx * 15}%` }}></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                  <p className="text-sm text-blue-800">
-                    <span className="font-bold">Total needed:</span> {fertilizerData?.totalNeeded || 'Calculating...'}
-                    <span className="block text-xs">Without VRA: 68,110kg more</span>
-                  </p>
-                </div>
-              </div>
+              <MapCard 
+                loading={loading.map}
+                onRegionSelect={handleRegionSelect}
+                onRefresh={handleRefresh}
+              />
+              <FertilizerCard 
+                data={fertilizerData}
+                loading={loading.fertilizer}
+                error={error.fertilizer}
+              />
             </div>
 
-            {/* Right Column */}
             <div className="w-full lg:w-1/3 space-y-6">
-              {/* Toggleable View */}
-              <div className="flex border-b border-orange-100">
-                <button className="flex-1 px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 text-center">
-                  Summary
-                </button>
-                <button className="flex-1 px-4 py-2 text-gray-500 hover:text-orange-400 text-center">
-                  Detailed
-                </button>
-              </div>
-
-              {/* Education-Inspired Stats Card */}
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
-                {loading.health && (
-                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-                    <Spinner className="text-orange-500" />
-                  </div>
-                )}
-
-                <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent mb-4">
-                  Orchard Distribution
-                </h2>
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="p-3 bg-purple-50 rounded-lg">
-                    <p className="text-sm text-purple-700">By Age</p>
-                    <p className="text-lg font-bold text-purple-600">3 Groups</p>
-                  </div>
-                  <div className="p-3 bg-pink-50 rounded-lg">
-                    <p className="text-sm text-pink-700">By Size</p>
-                    <p className="text-lg font-bold text-pink-600">5 Tiers</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-orange-700 mb-2">Top Varieties</h3>
-                    <div className="space-y-2">
-                      {["Valencia Orange", "Eureka Lemon", "Meyer Lemon"].map((item, idx) => (
-                        <div key={idx} className="flex justify-between">
-                          <span className="text-gray-600">{item}</span>
-                          <span className="font-medium">{15 - idx * 5}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-medium text-green-700 mb-2">Health Status</h3>
-                    {healthStatus.map((item, idx) => (
-                      <div key={idx} className="mb-2">
-                        <div className="flex justify-between text-xs mb-1">
-                          <span>{item.label}</span>
-                          <span>{item.value}</span>
-                        </div>
-                        <div className="h-1.5 bg-gray-100 rounded-full">
-                          <div className={`h-1.5 rounded-full ${item.color}`} style={{ width: item.value }}></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Top Producers Table */}
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
-                {loading.regions && (
-                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-                    <Spinner className="text-orange-500" />
-                  </div>
-                )}
-                {error.regions && (
-                  <div className="absolute top-2 right-2 bg-red-100 text-red-600 px-2 py-1 text-xs rounded">
-                    {error.regions}
-                  </div>
-                )}
-
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
-                    Top Producing Regions
-                  </h2>
-                  <button 
-                    onClick={() => navigate('/dashboard/orchards')}
-                    className="text-xs text-orange-500 hover:text-orange-700"
-                  >
-                    View All →
-                  </button>
-                </div>
-
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left text-gray-500 border-b">
-                      <th className="pb-2">Region</th>
-                      <th className="pb-2 text-right">Yield</th>
-                      <th className="pb-2 text-right">Δ</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {regionalData.map((row, idx) => (
-                      <tr key={idx} className="border-b border-gray-100 hover:bg-orange-50">
-                        <td className="py-2 font-medium">{row.region}</td>
-                        <td className="py-2 text-right">{row.yield}</td>
-                        <td className={`py-2 text-right ${row.color}`}>{row.delta}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <StatsToggle />
+              <OrchardDistributionCard 
+                healthStatus={healthStatus}
+                loading={loading.health}
+              />
+              <TopProducersTable 
+                data={regionalData}
+                loading={loading.regions}
+                error={error.regions}
+              />
             </div>
           </div>
         </div>
