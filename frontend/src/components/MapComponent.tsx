@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Geometry, FeatureCollection } from 'geojson';
@@ -41,42 +41,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
   const [error, setError] = useState<string | null>(null);
   const [orchardData, setOrchardData] = useState<OrchardFeatureCollection | null>(null);
 
-  // Initialize the map when component mounts
-  useEffect(() => {
-    if (mapContainerRef.current && !mapRef.current) {
-      mapRef.current = L.map(mapContainerRef.current).setView([latitude, longitude], zoom);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(mapRef.current);
-
-      fetchOrchardData();
-      setLoading(false);
-    }
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, [latitude, longitude, zoom]);
-
-  // Update map view when coordinates change
-  useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.setView([latitude, longitude], zoom);
-    }
-  }, [latitude, longitude, zoom]);
-
-  // Add orchard data to map when available
-  useEffect(() => {
-    if (mapRef.current && orchardData) {
-      addOrchardsToMap(orchardData);
-    }
-  }, [orchardData]);
-
-  const fetchOrchardData = async () => {
+  const fetchOrchardData = useCallback(async () => {
     try {
       const mockData: OrchardFeatureCollection = {
         type: 'FeatureCollection',
@@ -120,7 +85,42 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       console.error('Error fetching orchard data:', err);
       setError('Failed to load orchard data');
     }
-  };
+  }, [latitude, longitude]); // Dependencies added here
+
+  // Initialize the map when component mounts
+  useEffect(() => {
+    if (mapContainerRef.current && !mapRef.current) {
+      mapRef.current = L.map(mapContainerRef.current).setView([latitude, longitude], zoom);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(mapRef.current);
+
+      fetchOrchardData();
+      setLoading(false);
+    }
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, [latitude, longitude, zoom, fetchOrchardData]); // Added fetchOrchardData here
+
+  // Update map view when coordinates change
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setView([latitude, longitude], zoom);
+    }
+  }, [latitude, longitude, zoom]);
+
+  // Add orchard data to map when available
+  useEffect(() => {
+    if (mapRef.current && orchardData) {
+      addOrchardsToMap(orchardData);
+    }
+  }, [orchardData]);
 
   const addOrchardsToMap = (data: OrchardFeatureCollection) => {
     if (!mapRef.current) return;
