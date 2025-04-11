@@ -1,32 +1,61 @@
+/* src/index.css or src/App.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ✅ Fix full height and layout issues */
+/* Core layout fixes */
 html,
 body,
 #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  @apply h-full m-0 p-0;
 }
 
-/* 💫 Custom animation (for loading screen) */
+/* Map container structure */
+.parent-container {
+  @apply h-screen w-full overflow-hidden;
+}
+
+/* Leaflet map container */
+.leaflet-container {
+  @apply h-full w-full;
+  min-height: 400px; /* Minimum height for map visibility */
+}
+
+/* Custom animations */
 @keyframes spin-slow {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .animate-spin-slow {
   animation: spin-slow 3s linear infinite;
 }
-/* src/index.css */
-.parent-container {
-  height: 100vh;
-  width: 100%;
-  overflow: hidden; /* Prevents double-scrolling */
+
+/* Map interaction improvements */
+.leaflet-control-container {
+  @apply select-none; /* Prevent text selection on controls */
+}
+
+/* Custom scrollbar for map popups (if needed) */
+.leaflet-popup-content {
+  @apply max-h-[300px] overflow-y-auto;
+  scrollbar-width: thin;
+}
+
+/* Z-index fixes for overlapping elements */
+.leaflet-top {
+  @apply z-[1000];
+}
+.leaflet-bottom {
+  @apply z-[1000];
+}
+
+/* Error message styling */
+.map-error {
+  @apply absolute top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-[1001];
+}
+
+/* Loading spinner container */
+.map-loading {
+  @apply absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-[1000];
 }
