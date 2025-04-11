@@ -3,7 +3,6 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Geometry, FeatureCollection } from 'geojson';
 
-// Define interfaces for props and data structures
 interface MapComponentProps {
   latitude: number;
   longitude: number;
@@ -22,16 +21,14 @@ interface OrchardProperties {
 
 type OrchardFeatureCollection = FeatureCollection<Geometry, OrchardProperties>;
 
-// Helper function to determine marker/feature color based on productivity
 function getColor(productivity: number): string {
   return productivity > 80 ? '#4CAF50' :
          productivity > 50 ? '#FFC107' :
                              '#FF9800';
 }
 
-// Define the custom icon for citrus orchards directly
 const citrusIcon = L.icon({
-  iconUrl: '/citrus-icon.png', // Ensure this path is correct relative to your public folder
+  iconUrl: '/citrus-icon.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32]
@@ -47,22 +44,16 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
   // Initialize the map when component mounts
   useEffect(() => {
     if (mapContainerRef.current && !mapRef.current) {
-      // Create map instance
       mapRef.current = L.map(mapContainerRef.current).setView([latitude, longitude], zoom);
 
-      // Add tile layer (OpenStreetMap)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mapRef.current);
 
-      // Fetch orchard data
       fetchOrchardData();
-
-      // Set loading to false after map initialization
       setLoading(false);
     }
 
-    // Cleanup function
     return () => {
       if (mapRef.current) {
         mapRef.current.remove();
@@ -85,14 +76,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     }
   }, [orchardData]);
 
-  // Fetch orchard data from API or use mock data
   const fetchOrchardData = async () => {
     try {
-      // In a real app, you would fetch data from your API
-      // const response = await fetch('api/orchards/geojson');
-      // const data = await response.json();
-      
-      // For now, using mock data
       const mockData: OrchardFeatureCollection = {
         type: 'FeatureCollection',
         features: [
@@ -130,7 +115,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
           }
         ]
       };
-
       setOrchardData(mockData);
     } catch (err) {
       console.error('Error fetching orchard data:', err);
@@ -138,18 +122,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     }
   };
 
-  // Add orchards to the map as markers
   const addOrchardsToMap = (data: OrchardFeatureCollection) => {
     if (!mapRef.current) return;
 
-    // Clear existing layers if needed
-    // mapRef.current.eachLayer(layer => {
-    //   if (layer instanceof L.Marker || layer instanceof L.GeoJSON) {
-    //     mapRef.current?.removeLayer(layer);
-    //   }
-    // });
-
-    // Add GeoJSON layer
     L.geoJSON(data, {
       pointToLayer: (feature, latlng) => {
         return L.marker(latlng, { icon: citrusIcon });
@@ -169,16 +144,14 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
           `);
         }
       },
-      style: (feature) => {
-        return {
-          color: feature?.properties ? getColor(feature.properties.productivity) : '#FF9800'
-        };
-      }
+      style: (feature) => ({
+        color: feature?.properties ? getColor(feature.properties.productivity) : '#FF9800'
+      })
     }).addTo(mapRef.current);
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full" style={{ height: "70vh" }}>
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-orange-500"></div>
@@ -192,7 +165,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       <div 
         ref={mapContainerRef} 
         className="w-full h-full rounded-lg"
-        style={{ minHeight: '100%' }}
       ></div>
     </div>
   );
