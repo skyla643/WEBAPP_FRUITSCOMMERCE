@@ -7,7 +7,7 @@ interface MapComponentProps {
   latitude: number;
   longitude: number;
   zoom: number;
-  refreshInterval?: number; // in milliseconds
+  refreshInterval?: number;
 }
 
 interface OrchardProperties {
@@ -26,14 +26,13 @@ const MapComponent: React.FC<MapComponentProps> = ({
   latitude, 
   longitude, 
   zoom,
-  refreshInterval = 300000 // 5 minutes by default
+  refreshInterval = 300000 // 5 minutes default refresh
 }) => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [dataVersion, setDataVersion] = useState(0); // Force re-renders
 
   // Custom citrus orchard icon
   const citrusIcon = L.icon({
@@ -43,16 +42,18 @@ const MapComponent: React.FC<MapComponentProps> = ({
     popupAnchor: [0, -32]
   });
 
+  const getColor = useCallback((productivity?: number) => {
+    if (productivity === undefined) return '#CCCCCC';
+    return productivity > 80 ? '#4CAF50' :
+           productivity > 50 ? '#FFC107' : '#FF9800';
+  }, []);
+
   const fetchOrchardData = useCallback(async (signal: AbortSignal) => {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 
-        parseInt(process.env.REACT_APP_API_TIMEOUT || '8000'));
-
       const response = await fetch(
         `${process.env.REACT_APP_INTA_API}/orchards/geojson?region=citrus&lat=${latitude}&lng=${longitude}`,
         {
-          signal: controller.signal,
+          signal,
           headers: {
             'Accept': 'application/json',
             'Cache-Control': 'no-cache'
@@ -60,18 +61,14 @@ const MapComponent: React.FC<MapComponentProps> = ({
         }
       );
 
-      clearTimeout(timeoutId);
-
       if (!response.ok) {
         throw new Error(`API responded with status ${response.status}`);
       }
 
       const data: OrchardFeatureCollection = await response.json();
-      const updateTime = new Date().toLocaleTimeString();
-      
       return {
         data,
-        updateTime
+        updateTime: new Date().toLocaleTimeString()
       };
     } catch (err) {
       throw new Error(`Failed to fetch data: ${err instanceof Error ? err.message : String(err)}`);
@@ -88,25 +85,35 @@ const MapComponent: React.FC<MapComponentProps> = ({
       }
     });
 
-    // Create productivity color scale
-    const getColor = (productivity: number) => {
-      return productivity > 80 ? '#4CAF50' :
-             productivity > 50 ? '#FFC107' : '#FF9800';
-    };
-
-    // Add new data layer
+    // Add new data layer with proper type safety
     L.geoJSON(data, {
       pointToLayer: (feature, latlng) => {
+        if (!feature?.properties) {
+          return L.marker(latlng);
+        }
         return L.marker(latlng, { icon: citrusIcon });
       },
-      style: (feature) => ({
-        fillColor: getColor(feature.properties.productivity),
-        weight: 1,
-        opacity: 1,
-        color: 'white',
-        fillOpacity: 0.7
-      }),
+      style: (feature) => {
+        if (!feature?.properties) {
+          return {
+            fillColor: '#CCCCCC',
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.7
+          };
+        }
+        return {
+          fillColor: getColor(feature.properties.productivity),
+          weight: 1,
+          opacity: 1,
+          color: 'white',
+          fillOpacity: 0.7
+        };
+      },
       onEachFeature: (feature, layer) => {
+        if (!feature?.properties) return;
+        
         const popupContent = `
           <div class="p-2">
             <h3 class="font-bold">${feature.properties.name}</h3>
@@ -114,7 +121,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
             <p>Productivity: <span style="color:${getColor(feature.properties.productivity)}">
               ${feature.properties.productivity}%
             </span></p>
-            <p>Updated: ${feature.properties.lastUpdated || 'Unknown'}</p>
+            <p>Updated: ${feature.properties.lastUpdated}</p>
           </div>
         `;
         layer.bindPopup(popupContent);
@@ -141,27 +148,29 @@ const MapComponent: React.FC<MapComponentProps> = ({
       return div;
     };
     legend.addTo(mapRef.current);
-  }, [citrusIcon, lastUpdated]);
+  }, [citrusIcon, getColor, lastUpdated]);
 
   const loadData = useCallback(async () => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     try {
       setLoading(true);
       setError(null);
       
-      const result = await fetchOrchardData(new AbortController().signal);
+      const result = await fetchOrchardData(controller.signal);
       renderMapData(result.data);
       setLastUpdated(result.updateTime);
-      setDataVersion(v => v + 1); // Force refresh
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load data');
       console.error('Data loading error:', err);
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
     }
   }, [fetchOrchardData, renderMapData]);
 
-  // Initial load and refresh interval
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -169,8 +178,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
     const map = L.map(mapContainerRef.current, {
       zoomControl: true,
       dragging: true,
-      scrollWheelZoom: true,
-      doubleClickZoom: true
+      scrollWheelZoom: true
     }).setView([latitude, longitude], zoom);
     mapRef.current = map;
 
@@ -200,7 +208,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
         className="h-full w-full z-0"
         style={{ 
           minHeight: '400px',
-          touchAction: 'none' // Better mobile touch handling
+          touchAction: 'none'
         }}
       />
       
