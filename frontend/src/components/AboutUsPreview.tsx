@@ -7,8 +7,8 @@ import { GiOrange } from 'react-icons/gi';
 const AboutUsPreview: React.FC = () => {
   return (
     <div className="font-sans">
-      {/* Video Background Hero */}
-      <div className="relative h-screen overflow-hidden">
+      {/* Video Background Hero - FIXED: Removed overflow-hidden */}
+      <div className="relative h-screen">
         <video
           autoPlay
           loop

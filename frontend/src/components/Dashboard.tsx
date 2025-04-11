@@ -147,12 +147,14 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 bg-fixed font-arial">
+    // FIXED: Added overflow-auto to make content scrollable
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 bg-fixed font-arial overflow-auto">
       <Navbar isAdminOrStaff={isAdminOrStaff} />
 
       {/* Show dashboard content only on /dashboard */}
       {isDashboardHome ? (
-        <div className="flex-grow p-6">
+        // FIXED: Content wrapper with proper overflow
+        <div className="flex-grow p-6 overflow-auto">
           <div className="flex flex-col w-full max-w-7xl mx-auto space-y-6 lg:space-y-0 lg:space-x-6 lg:flex-row">
             {/* Map Area (Left Column - 2/3 width) */}
             <div className="w-full lg:w-2/3 space-y-6">
