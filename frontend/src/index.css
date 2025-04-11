@@ -59,3 +59,20 @@ body,
 .map-loading {
   @apply absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-[1000];
 }
+
+/* Fix scrolling for entire app */
+html, body, #root {
+  height: 100%;
+  overflow: auto;
+}
+
+.leaflet-container {
+  height: 100%;
+  min-height: 400px;
+}
+
+/* Ensure dashboard content scrolls */
+.dashboard-content {
+  overflow-y: auto;
+  height: calc(100vh - navbar-height);
+}
