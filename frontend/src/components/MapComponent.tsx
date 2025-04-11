@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { GeoJsonObject, Feature, Geometry, FeatureCollection } from 'geojson';
 
 interface MapComponentProps {
   latitude: number;
@@ -8,21 +9,17 @@ interface MapComponentProps {
   zoom: number;
 }
 
-interface OrchardFeature {
-  type: string;
-  properties: {
-    id: string;
-    name: string;
-    yield: number;
-    productivity: number;
-    variety: string;
-    age: number;
-  };
-  geometry: {
-    type: string;
-    coordinates: number[][][];
-  };
+interface OrchardProperties {
+  id: string;
+  name: string;
+  yield: number;
+  productivity: number;
+  variety: string;
+  age: number;
 }
+
+type OrchardFeature = Feature<Geometry, OrchardProperties>;
+type OrchardFeatureCollection = FeatureCollection<Geometry, OrchardProperties>;
 
 const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }) => {
   const mapRef = useRef<L.Map | null>(null);
@@ -56,12 +53,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     const loadOrchardData = async () => {
       try {
         setLoading(true);
-        // Replace hardcoded URL
         const response = await fetch(`${process.env.REACT_APP_INTA_API}/orchards/geojson?region=citrus`);
         
         if (!response.ok) throw new Error('Failed to fetch orchard data');
         
-        const data: { features: OrchardFeature[] } = await response.json();
+        const data: OrchardFeatureCollection = await response.json();
 
         // Create productivity color scale
         const getColor = (productivity: number) => {
@@ -70,7 +66,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
         };
 
         // Add GeoJSON layer with custom styling
-        L.geoJSON(data.features, {
+        L.geoJSON(data, {
           pointToLayer: (feature, latlng) => {
             return L.marker(latlng, { icon: citrusIcon });
           },
@@ -98,23 +94,25 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
         }).addTo(map);
 
         // Add legend
-        const legend = L.control({ position: 'bottomright' });
+        const legend = new L.Control({ position: 'bottomright' });
+        
         legend.onAdd = () => {
           const div = L.DomUtil.create('div', 'bg-white p-3 text-sm shadow-lg');
           div.innerHTML = `
             <h4 class="font-bold mb-2">Productivity</h4>
             <div class="flex items-center mb-1">
-              <i class="w-4 h-4 mr-2 bg-[#4CAF50]"></i> >80%
+              <i style="display: inline-block; width: 16px; height: 16px; margin-right: 8px; background-color: #4CAF50;"></i> >80%
             </div>
             <div class="flex items-center mb-1">
-              <i class="w-4 h-4 mr-2 bg-[#FFC107]"></i> 50-80%
+              <i style="display: inline-block; width: 16px; height: 16px; margin-right: 8px; background-color: #FFC107;"></i> 50-80%
             </div>
             <div class="flex items-center">
-              <i class="w-4 h-4 mr-2 bg-[#FF9800]"></i> <50%
+              <i style="display: inline-block; width: 16px; height: 16px; margin-right: 8px; background-color: #FF9800;"></i> <50%
             </div>
           `;
           return div;
         };
+
         legend.addTo(map);
 
       } catch (err) {
@@ -155,6 +153,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       {error && (
         <div className="absolute top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           <strong>Error:</strong> {error}
+          <button 
+            onClick={() => window.location.reload()} 
+            className="ml-2 text-blue-600 underline"
+          >
+            Retry
+          </button>
         </div>
       )}
     </div>
