@@ -9,29 +9,25 @@
 
 /* Core layout - CHOOSE ONE STRATEGY */
 
-/* Strategy 1: Make root elements scrollable */
-html, body, #root {
-  height: 100%; /* Ensures % heights work for children */
-  overflow: auto; /* Allows scrolling */
+/* Strategy 2 (Recommended for full page scroll): Use min-height on main container */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%; /* Ensures % heights work for children */
 }
 
-/* Strategy 2 (Alternative): Use min-height on main container */
-/*
-html, body { margin: 0; padding: 0; height: 100%; }
-#root { min-height: 100vh; display: flex; flex-direction: column; }
-*/
+#root {
+  min-height: 100vh; /* Ensures the root container is at least the height of the viewport */
+  overflow-y: auto; /* Allows vertical scrolling when content exceeds viewport */
+}
 
 /* Fix the problematic container IF it's used */
 .parent-container {
   /* Remove overflow: hidden! Choose height strategy */
-  /* Option A: Viewport height, internal scroll */
-   @apply h-screen w-full overflow-auto;
-  /* Option B: Minimum screen height, page scroll */
-  /* @apply min-h-screen w-full; */
-  /* Option C: Remove height/overflow if not needed */
-  /* @apply w-full; */
+  /* Option B (Recommended): Minimum screen height, page scroll */
+  @apply w-full;
+  min-height: 100vh; /* Ensure it's at least screen height */
+  overflow-y: auto; /* Allow scrolling when content exceeds viewport */
 }
 
 /* Leaflet map container (Define only ONCE) */
