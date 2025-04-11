@@ -1,4 +1,4 @@
-/* src/index.css or src/App.css */
+/* frontend/src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,24 +7,23 @@
 html,
 body,
 #root {
-  @apply h-full m-0 p-0;
+  @apply h-full m-0 p-0 overflow-auto;
 }
 
 /* Map container structure */
 .parent-container {
-  @apply h-screen w-full overflow-hidden;
+  @apply h-screen w-full;
 }
 
 /* Leaflet map container */
 .leaflet-container {
   @apply h-full w-full;
-  min-height: 400px; /* Minimum height for map visibility */
+  min-height: 400px;
 }
 
 /* Custom animations */
 @keyframes spin-slow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animate-spin-slow {
@@ -33,46 +32,35 @@ body,
 
 /* Map interaction improvements */
 .leaflet-control-container {
-  @apply select-none; /* Prevent text selection on controls */
+  @apply select-none;
 }
 
-/* Custom scrollbar for map popups (if needed) */
+/* Custom scrollbar for map popups */
 .leaflet-popup-content {
   @apply max-h-[300px] overflow-y-auto;
   scrollbar-width: thin;
 }
 
-/* Z-index fixes for overlapping elements */
-.leaflet-top {
-  @apply z-[1000];
-}
+/* Z-index management */
+.leaflet-top,
 .leaflet-bottom {
   @apply z-[1000];
 }
 
 /* Error message styling */
 .map-error {
-  @apply absolute top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-[1001];
+  @apply fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-[1001];
 }
 
-/* Loading spinner container */
+/* Loading spinner */
 .map-loading {
-  @apply absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-[1000];
+  @apply fixed inset-0 bg-white/70 flex items-center justify-center z-[1000];
 }
 
-/* Fix scrolling for entire app */
-html, body, #root {
-  height: 100%;
-  overflow: auto;
-}
-
-.leaflet-container {
-  height: 100%;
-  min-height: 400px;
-}
-
-/* Ensure dashboard content scrolls */
+/* Dashboard layout */
 .dashboard-content {
-  overflow-y: auto;
-  height: calc(100vh - navbar-height);
+  @apply overflow-y-auto;
+  height: calc(100vh - theme('spacing.16')); /* Assuming navbar is 4rem (16) */
 }
+
+/* Remove duplicates below this line - all above rules cover these cases */
