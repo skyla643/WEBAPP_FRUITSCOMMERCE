@@ -43,6 +43,15 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
 
   const fetchOrchardData = useCallback(async () => {
     try {
+      setLoading(true);
+      const response = await fetch('/api/orchards/geojson');
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      const data = await response.json();
+      console.log("API Response:", data);
+      setOrchardData(data);
+    } catch (err) {
+      console.error("Fetch failed:", err);
+      // Fallback to mock data if API fails
       const mockData: OrchardFeatureCollection = {
         type: 'FeatureCollection',
         features: [
@@ -59,45 +68,37 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
               productivity: 85,
               variety: 'Valencia Orange',
               age: 5,
-              lastUpdated: '2023-04-05'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [longitude - 0.01, latitude - 0.01]
-            },
-            properties: {
-              id: '2',
-              name: 'Lemon Grove',
-              yield: 18,
-              productivity: 65,
-              variety: 'Eureka Lemon',
-              age: 3,
-              lastUpdated: '2023-04-02'
+              lastUpdated: new Date().toISOString()
             }
           }
         ]
       };
       setOrchardData(mockData);
-    } catch (err) {
-      console.error('Error fetching orchard data:', err);
-      setError('Failed to load orchard data');
+      setError("Using mock data - API offline");
+    } finally {
+      setLoading(false);
     }
-  }, [latitude, longitude]); // Dependencies added here
+  }, [latitude, longitude]);
 
   // Initialize the map when component mounts
   useEffect(() => {
     if (mapContainerRef.current && !mapRef.current) {
-      mapRef.current = L.map(mapContainerRef.current).setView([latitude, longitude], zoom);
+      mapRef.current = L.map(mapContainerRef.current, {
+        center: [latitude, longitude],
+        zoom: zoom,
+        zoomControl: true,
+        dragging: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        boxZoom: true,
+        keyboard: true
+      });
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mapRef.current);
 
       fetchOrchardData();
-      setLoading(false);
     }
 
     return () => {
@@ -106,7 +107,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
         mapRef.current = null;
       }
     };
-  }, [latitude, longitude, zoom, fetchOrchardData]); // Added fetchOrchardData here
+  }, [latitude, longitude, zoom, fetchOrchardData]);
 
   // Update map view when coordinates change
   useEffect(() => {
@@ -118,6 +119,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
   // Add orchard data to map when available
   useEffect(() => {
     if (mapRef.current && orchardData) {
+      // Clear existing layers
+      mapRef.current.eachLayer(layer => {
+        if (layer instanceof L.GeoJSON) {
+          mapRef.current?.removeLayer(layer);
+        }
+      });
+      
       addOrchardsToMap(orchardData);
     }
   }, [orchardData]);
@@ -134,19 +142,16 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
           const props = feature.properties;
           layer.bindPopup(`
             <div class="popup-content">
-              <h3>${props.name}</h3>
+              <h3 class="font-bold">${props.name}</h3>
               <p>Variety: ${props.variety}</p>
               <p>Yield: ${props.yield} tons/ha</p>
-              <p>Productivity: ${props.productivity}%</p>
+              <p>Productivity: <span style="color: ${getColor(props.productivity)}">${props.productivity}%</span></p>
               <p>Age: ${props.age} years</p>
-              <p class="text-xs text-gray-500">Last updated: ${props.lastUpdated}</p>
+              <p class="text-xs text-gray-500">Last updated: ${new Date(props.lastUpdated).toLocaleString()}</p>
             </div>
           `);
         }
-      },
-      style: (feature) => ({
-        color: feature?.properties ? getColor(feature.properties.productivity) : '#FF9800'
-      })
+      }
     }).addTo(mapRef.current);
   };
 
@@ -165,6 +170,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       <div 
         ref={mapContainerRef} 
         className="w-full h-full rounded-lg"
+        style={{ zIndex: 0 }}
       ></div>
     </div>
   );
