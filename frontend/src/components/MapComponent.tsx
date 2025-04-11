@@ -65,16 +65,28 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Initialize map
+    // Initialize map with proper touch options
     const map = L.map(mapContainerRef.current, {
       zoomControl: true,
       dragging: true,
       scrollWheelZoom: true,
-      tap: false // Fixes mobile touch issues
+      touchZoom: true,
+      tapTolerance: 15,
+      bounceAtZoomLimits: false,
+      doubleClickZoom: true,
+      boxZoom: true,
+      keyboard: true,
+      inertia: true,
+      zoomSnap: 0.5,
+      zoomDelta: 1
     }).setView([latitude, longitude], zoom);
+    
     mapRef.current = map;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
     const loadData = async () => {
       try {
@@ -132,6 +144,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
           <div class="p-2">
             <h3>${feature.properties.name}</h3>
             <p>Yield: ${feature.properties.yield}T/ha</p>
+            <p>Productivity: ${feature.properties.productivity}%</p>
+            <p>Last Updated: ${feature.properties.lastUpdated}</p>
           </div>
         `);
       }
@@ -143,14 +157,27 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       <div 
         ref={mapContainerRef} 
         className="h-full w-full"
-        style={{ minHeight: '400px' }}
+        style={{ 
+          minHeight: '400px',
+          touchAction: 'none' // Added for mobile touch handling
+        }}
       />
-      {loading && <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"/>
-      </div>}
-      {error && <div className="absolute top-4 right-4 bg-red-100 p-3 rounded">
-        {error}
-      </div>}
+      {loading && (
+        <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"/>
+        </div>
+      )}
+      {error && (
+        <div className="absolute top-4 right-4 bg-red-100 p-3 rounded z-20">
+          {error}
+          <button 
+            onClick={() => window.location.reload()}
+            className="ml-2 text-blue-600 underline"
+          >
+            Retry
+          </button>
+        </div>
+      )}
     </div>
   );
 };
