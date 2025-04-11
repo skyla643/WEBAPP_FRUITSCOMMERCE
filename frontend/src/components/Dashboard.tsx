@@ -161,7 +161,8 @@ const Dashboard: React.FC = () => {
   // Region selection handler
   const handleRegionSelect = (region: string) => {
     setSelectedRegion(region);
-    // You would add logic here to update the map view based on region
+    // You can add additional logic here to handle the region selection
+    console.log(`Region selected: ${region}`);
   };
 
   return (
@@ -218,13 +219,177 @@ const Dashboard: React.FC = () => {
 
               {/* Fertilizer Card */}
               <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
-                {/* ... (keep existing fertilizer card content) ... */}
+                {loading.fertilizer && (
+                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+                    <Spinner className="text-orange-500" />
+                  </div>
+                )}
+                {error.fertilizer && (
+                  <div className="absolute top-2 right-2 bg-red-100 text-red-600 px-2 py-1 text-xs rounded">
+                    {error.fertilizer}
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                    <FaLeaf className="inline mr-2" /> Fertilizer Optimization
+                  </h2>
+                  <button className="px-3 py-1 text-sm rounded-md bg-gradient-to-r from-orange-400 to-yellow-400 text-white hover:shadow-md hover:shadow-orange-200 transition">
+                    Export VRA Map →
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-yellow-700">Standard Rate</p>
+                    <p className="text-lg font-bold text-orange-600">
+                      {fertilizerData?.standardRate || 'Loading...'}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-orange-50 rounded-lg">
+                    <p className="text-sm text-orange-700">Productivity Zones</p>
+                    <p className="text-lg font-bold text-yellow-600">
+                      {fertilizerData?.zones || '0'} Levels
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {(fertilizerData?.zonesData || []).map((item, idx) => (
+                    <div key={idx} className="p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg">
+                      <div className="flex justify-between mb-1">
+                        <span className="font-medium text-orange-800">{item.zone}</span>
+                        <span className="font-bold">{item.rate}</span>
+                      </div>
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>{item.area}</span>
+                        <span className="font-semibold text-orange-600">Saved 15%</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full mt-2">
+                        <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${70 + idx * 15}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                  <p className="text-sm text-blue-800">
+                    <span className="font-bold">Total needed:</span> {fertilizerData?.totalNeeded || 'Calculating...'}
+                    <span className="block text-xs">Without VRA: 68,110kg more</span>
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Right Column */}
             <div className="w-full lg:w-1/3 space-y-6">
-              {/* ... (keep existing right column content) ... */}
+              {/* Toggleable View */}
+              <div className="flex border-b border-orange-100">
+                <button className="flex-1 px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 text-center">
+                  Summary
+                </button>
+                <button className="flex-1 px-4 py-2 text-gray-500 hover:text-orange-400 text-center">
+                  Detailed
+                </button>
+              </div>
+
+              {/* Education-Inspired Stats Card */}
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+                {loading.health && (
+                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+                    <Spinner className="text-orange-500" />
+                  </div>
+                )}
+
+                <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent mb-4">
+                  Orchard Distribution
+                </h2>
+
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="p-3 bg-purple-50 rounded-lg">
+                    <p className="text-sm text-purple-700">By Age</p>
+                    <p className="text-lg font-bold text-purple-600">3 Groups</p>
+                  </div>
+                  <div className="p-3 bg-pink-50 rounded-lg">
+                    <p className="text-sm text-pink-700">By Size</p>
+                    <p className="text-lg font-bold text-pink-600">5 Tiers</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-orange-700 mb-2">Top Varieties</h3>
+                    <div className="space-y-2">
+                      {["Valencia Orange", "Eureka Lemon", "Meyer Lemon"].map((item, idx) => (
+                        <div key={idx} className="flex justify-between">
+                          <span className="text-gray-600">{item}</span>
+                          <span className="font-medium">{15 - idx * 5}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-green-700 mb-2">Health Status</h3>
+                    {healthStatus.map((item, idx) => (
+                      <div key={idx} className="mb-2">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>{item.label}</span>
+                          <span>{item.value}</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-100 rounded-full">
+                          <div className={`h-1.5 rounded-full ${item.color}`} style={{ width: item.value }}></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Top Producers Table */}
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
+                {loading.regions && (
+                  <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+                    <Spinner className="text-orange-500" />
+                  </div>
+                )}
+                {error.regions && (
+                  <div className="absolute top-2 right-2 bg-red-100 text-red-600 px-2 py-1 text-xs rounded">
+                    {error.regions}
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center mb-3">
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                    Top Producing Regions
+                  </h2>
+                  <button 
+                    onClick={() => navigate('/dashboard/orchards')}
+                    className="text-xs text-orange-500 hover:text-orange-700"
+                  >
+                    View All →
+                  </button>
+                </div>
+
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-gray-500 border-b">
+                      <th className="pb-2">Region</th>
+                      <th className="pb-2 text-right">Yield</th>
+                      <th className="pb-2 text-right">Δ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {regionalData.map((row, idx) => (
+                      <tr key={idx} className="border-b border-gray-100 hover:bg-orange-50">
+                        <td className="py-2 font-medium">{row.region}</td>
+                        <td className="py-2 text-right">{row.yield}</td>
+                        <td className={`py-2 text-right ${row.color}`}>{row.delta}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
