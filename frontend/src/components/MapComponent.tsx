@@ -56,7 +56,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     const loadOrchardData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://api.inta.gob.ar/orchards/geojson?region=citrus');
+        // Replace hardcoded URL
+        const response = await fetch(`${process.env.REACT_APP_INTA_API}/orchards/geojson?region=citrus`);
         
         if (!response.ok) throw new Error('Failed to fetch orchard data');
         
