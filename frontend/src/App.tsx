@@ -13,19 +13,24 @@ import AboutUsPreview from './components/AboutUsPreview';
 const App: React.FC = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<AboutUsPreview />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="orchards" element={<Orchards />} />
-          <Route path="pest-detection" element={<PestDetection />} />
-          <Route path="supply-chain" element={<SupplyChain />} />
-          <Route path="market-data" element={<MarketData />} />
-          <Route path="clients" element={<ClientManager />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="parent-container">
+        <Routes>
+          <Route path="/" element={<AboutUsPreview />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<Navigate to="orchards" replace />} />
+            <Route path="orchards" element={<Orchards />} />
+            <Route path="pest-detection" element={<PestDetection />} />
+            <Route path="supply-chain" element={<SupplyChain />} />
+            <Route path="market-data" element={<MarketData />} />
+            <Route path="clients" element={<ClientManager />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </Router>
   );
 };
