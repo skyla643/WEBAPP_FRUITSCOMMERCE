@@ -65,33 +65,39 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
                  productivity > 50 ? '#FFC107' : '#FF9800';
         };
 
-        // Add GeoJSON layer with custom styling
-        L.geoJSON(data, {
-          pointToLayer: (feature, latlng) => {
-            return L.marker(latlng, { icon: citrusIcon });
-          },
-          style: (feature) => ({
-            fillColor: getColor(feature.properties.productivity),
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.7
-          }),
-          onEachFeature: (feature, layer) => {
-            const popupContent = `
-              <div class="p-2">
-                <h3 class="font-bold">${feature.properties.name}</h3>
-                <p>Variety: ${feature.properties.variety}</p>
-                <p>Yield: <strong>${feature.properties.yield}T/ha</strong></p>
-                <p>Productivity: <span style="color:${getColor(feature.properties.productivity)}">
-                  ${feature.properties.productivity}%
-                </span></p>
-                <p>Age: ${feature.properties.age} years</p>
-              </div>
-            `;
-            layer.bindPopup(popupContent);
-          }
-        }).addTo(map);
+        // Update the L.geoJSON section with proper type safety
+L.geoJSON(data, {
+  pointToLayer: (feature, latlng) => {
+    if (!feature?.properties) return L.marker(latlng);
+    return L.marker(latlng, { icon: citrusIcon });
+  },
+  style: (feature) => {
+    if (!feature?.properties) return {};
+    return {
+      fillColor: getColor(feature.properties.productivity),
+      weight: 1,
+      opacity: 1,
+      color: 'white',
+      fillOpacity: 0.7
+    };
+  },
+  onEachFeature: (feature, layer) => {
+    if (!feature?.properties) return;
+    
+    const popupContent = `
+      <div class="p-2">
+        <h3 class="font-bold">${feature.properties.name}</h3>
+        <p>Variety: ${feature.properties.variety}</p>
+        <p>Yield: <strong>${feature.properties.yield}T/ha</strong></p>
+        <p>Productivity: <span style="color:${getColor(feature.properties.productivity)}">
+          ${feature.properties.productivity}%
+        </span></p>
+        <p>Age: ${feature.properties.age} years</p>
+      </div>
+    `;
+    layer.bindPopup(popupContent);
+  }
+}).addTo(map);
 
         // Add legend
         const legend = new L.Control({ position: 'bottomright' });
