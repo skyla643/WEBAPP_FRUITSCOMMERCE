@@ -6,10 +6,10 @@ import { GiOrange } from 'react-icons/gi';
 
 const AboutUsPreview: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="font-sans">
       {/* Video Background Hero */}
       <div className="relative h-screen overflow-hidden">
-        <video 
+        <video
           autoPlay
           loop
           muted
@@ -19,21 +19,21 @@ const AboutUsPreview: React.FC = () => {
           <source src="/sunnyorchard.mp4" type="video/mp4" />
           Your browser does not support HTML5 video.
         </video>
-        
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-green-700/20 to-yellow-500/20 z-1"></div>
-        
+
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col">
           {/* Navigation */}
           <nav className="px-8 py-6 flex justify-between items-center bg-white/80 backdrop-blur-sm">
             <div className="flex items-center">
               <motion.div
-                animate={{ 
+                animate={{
                   scale: [1, 0.95, 1],
                   rotate: [0, 5, -5, 0]
                 }}
-                transition={{ 
+                transition={{
                   repeat: Infinity,
                   repeatType: "reverse",
                   duration: 2
@@ -48,7 +48,7 @@ const AboutUsPreview: React.FC = () => {
 
           {/* Hero Content */}
           <div className="flex-grow flex flex-col justify-center items-center text-center px-4">
-            <motion.h1 
+            <motion.h1
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
@@ -56,7 +56,7 @@ const AboutUsPreview: React.FC = () => {
             >
               Argentina's Citrus Revolution
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -113,7 +113,7 @@ const AboutUsPreview: React.FC = () => {
               </li>
             </ul>
           </div>
-          
+
           {/* Image Placeholder */}
           <div className="bg-yellow-100 rounded-3xl flex items-center justify-center">
             <div className="text-center p-10">
@@ -126,7 +126,7 @@ const AboutUsPreview: React.FC = () => {
         {/* What We Offer */}
         <div className="mb-24">
           <h3 className="text-3xl md:text-4xl font-bold text-center text-green-600 mb-16">What We Offer</h3>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             {/* Farmers */}
             <div className="border-2 border-green-200 rounded-3xl p-8 hover:shadow-lg transition-all">
@@ -151,7 +151,7 @@ const AboutUsPreview: React.FC = () => {
                 </li>
               </ul>
             </div>
-            
+
             {/* Buyers */}
             <div className="border-2 border-yellow-200 rounded-3xl p-8 hover:shadow-lg transition-all">
               <div className="flex items-center mb-6">
@@ -181,7 +181,7 @@ const AboutUsPreview: React.FC = () => {
         {/* Impact Section */}
         <div className="text-center mb-24">
           <h3 className="text-3xl md:text-4xl font-bold text-green-600 mb-16">Our Impact</h3>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { value: "1,200+", label: "Farms empowered with smart technology" },
@@ -202,17 +202,17 @@ const AboutUsPreview: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h3 className="text-3xl font-bold mb-8">Join the Movement</h3>
           <div className="flex justify-center space-x-6 mb-8">
-            <a 
-              href="https://www.instagram.com/citrusargentinacorp/" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/citrusargentinacorp/"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition-all"
             >
               <FaInstagram className="text-xl" />
             </a>
-            <a 
-              href="https://www.linkedin.com/company/citrus-argentina-corp" 
-              target="_blank" 
+            <a
+              href="https://www.linkedin.com/company/citrus-argentina-corp"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-white/20 p-3 rounded-full hover:bg-white/30 transition-all"
             >
