@@ -7,6 +7,7 @@ interface MapComponentProps {
   latitude: number;
   longitude: number;
   zoom: number;
+  onRegionSelect?: (region: string) => void; // Added prop
 }
 
 interface OrchardProperties {
@@ -34,7 +35,12 @@ const citrusIcon = L.icon({
   popupAnchor: [0, -32]
 });
 
-const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }) => {
+const MapComponent: React.FC<MapComponentProps> = ({ 
+  latitude, 
+  longitude, 
+  zoom,
+  onRegionSelect // Destructured prop
+}) => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,7 +57,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
       setOrchardData(data);
     } catch (err) {
       console.error("Fetch failed:", err);
-      // Fallback to mock data if API fails
       const mockData: OrchardFeatureCollection = {
         type: 'FeatureCollection',
         features: [
@@ -80,7 +85,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     }
   }, [latitude, longitude]);
 
-  // Initialize the map when component mounts
+  // Initialize the map
   useEffect(() => {
     if (mapContainerRef.current && !mapRef.current) {
       mapRef.current = L.map(mapContainerRef.current, {
@@ -109,23 +114,21 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
     };
   }, [latitude, longitude, zoom, fetchOrchardData]);
 
-  // Update map view when coordinates change
+  // Update map view
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.setView([latitude, longitude], zoom);
     }
   }, [latitude, longitude, zoom]);
 
-  // Add orchard data to map when available
+  // Add orchard data to map
   useEffect(() => {
     if (mapRef.current && orchardData) {
-      // Clear existing layers
       mapRef.current.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
           mapRef.current?.removeLayer(layer);
         }
       });
-      
       addOrchardsToMap(orchardData);
     }
   }, [orchardData]);
@@ -135,7 +138,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ latitude, longitude, zoom }
 
     L.geoJSON(data, {
       pointToLayer: (feature, latlng) => {
-        return L.marker(latlng, { icon: citrusIcon });
+        const marker = L.marker(latlng, { icon: citrusIcon });
+        if (feature.properties && onRegionSelect) {
+          marker.on('click', () => {
+            onRegionSelect(feature.properties.name);
+          });
+        }
+        return marker;
       },
       onEachFeature: (feature, layer) => {
         if (feature.properties) {
