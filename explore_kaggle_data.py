@@ -1,25 +1,18 @@
 import kagglehub
 import os
 
-# Your Kaggle API credentials (ensure these are set up)
+# The name of the dataset you want to download
+dataset_name = "unitednations/crop-statistics-fao-all-countries"
 
 # The path where you want to download the dataset
-download_path = 'data/crop-statistics-fao-all-countries'
-
-# Ensure the download directory exists
-os.makedirs(download_path, exist_ok=True)
-
-# Initialize the Kaggle API
-api = kagglehub.KaggleApi()
-api.authenticate()  # This will use your credentials
-
-# The name of the dataset you want to download
-dataset_name = 'unitednations/crop-statistics-fao-all-countries'
+download_path = "data"  # kagglehub will create a subdirectory
 
 try:
     print(f"Downloading dataset '{dataset_name}' to '{download_path}'...")
-    api.dataset_download_files(dataset_name, path=download_path, unzip=True)
-    print("Dataset downloaded and extracted successfully!")
+    downloaded_path = kagglehub.dataset_download(
+        dataset_name, path=download_path, force=False, quiet=False, unzip=True
+    )
+    print(f"Dataset downloaded and extracted to: {downloaded_path}")
 except Exception as e:
     print(f"An error occurred during download: {e}")
     print("Make sure you have set up your Kaggle API keys correctly.")
