@@ -7,7 +7,7 @@ interface MapComponentProps {
   latitude: number;
   longitude: number;
   zoom: number;
-  onRegionSelect?: (region: string) => void; // Added prop
+  onRegionSelect?: (region: string) => void;
 }
 
 interface OrchardProperties {
@@ -39,7 +39,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   latitude, 
   longitude, 
   zoom,
-  onRegionSelect // Destructured prop
+  onRegionSelect
 }) => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -50,13 +50,28 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const fetchOrchardData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/orchards/geojson');
-      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      setError(null);
+      
+      // Use absolute URL in development or when needed
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:3001/api/orchards/geojson'
+        : '/api/orchards/geojson';
+      
+      console.log("Fetching orchard data from:", apiUrl);
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+      
       const data = await response.json();
       console.log("API Response:", data);
       setOrchardData(data);
     } catch (err) {
       console.error("Fetch failed:", err);
+      setError("Using mock data - API offline: " + (err instanceof Error ? err.message : String(err)));
+      
+      // Fallback to mock data
       const mockData: OrchardFeatureCollection = {
         type: 'FeatureCollection',
         features: [
@@ -79,7 +94,6 @@ const MapComponent: React.FC<MapComponentProps> = ({
         ]
       };
       setOrchardData(mockData);
-      setError("Using mock data - API offline");
     } finally {
       setLoading(false);
     }
