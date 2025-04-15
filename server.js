@@ -16,19 +16,20 @@ app.get('/api/health', (req, res) => {
 
 // Proxy endpoint for INTA API
 app.get('/api/regional-yield', async (req, res) => {
+  console.log('Attempting to fetch data from INTA API...');
   try {
-    // Only make the external API call if environment variables are set
     if (process.env.REACT_APP_INTA_API) {
       const response = await axios.get(`${process.env.REACT_APP_INTA_API}/agriculture/citrus`, {
         timeout: parseInt(process.env.REACT_APP_API_TIMEOUT || '5000')
       });
+      console.log('INTA API Response Status:', response.status);
+      console.log('INTA API Response Data:', response.data); // Log the raw data
       res.json({
         status: 'success',
         data: transformYieldData(response.data),
         timestamp: new Date().toISOString()
       });
     } else {
-      // Fallback to mock data if INTA API is not configured
       res.json({
         status: 'success',
         data: getMockRegionalYieldData(),
