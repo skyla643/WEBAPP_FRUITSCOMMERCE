@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import os
+import zipfile
 
 dataset_url = "https://www.kaggle.com/datasets/raghavramasamy/crop-statistics-fao-all-countries/download"
 download_path = "data/crop-statistics-fao-all-countries"
@@ -23,7 +24,6 @@ try:
     print(f"Dataset downloaded to: {output_path}")
 
     # Unzip the file
-    import zipfile
     with zipfile.ZipFile(output_path, 'r') as zip_ref:
         zip_ref.extract(extracted_filename, download_path)
     print(f"Extracted to: {extracted_path}")
