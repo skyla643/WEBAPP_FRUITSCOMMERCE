@@ -16,14 +16,16 @@ app.get('/api/health', (req, res) => {
 
 // Proxy endpoint for INTA API
 app.get('/api/regional-yield', async (req, res) => {
-  console.log('Attempting to fetch data from INTA API...');
+  console.log('--- /api/regional-yield route was hit ---'); // Added log
+  console.log('INTA API URL:', process.env.REACT_APP_INTA_API);
+  console.log('API Timeout:', process.env.REACT_APP_API_TIMEOUT);
   try {
     if (process.env.REACT_APP_INTA_API) {
       const response = await axios.get(`${process.env.REACT_APP_INTA_API}/agriculture/citrus`, {
         timeout: parseInt(process.env.REACT_APP_API_TIMEOUT || '5000')
       });
       console.log('INTA API Response Status:', response.status);
-      console.log('INTA API Response Data:', response.data); // Log the raw data
+      console.log('INTA API Response Data:', JSON.stringify(response.data, null, 2)); // Log the raw data with indentation
       res.json({
         status: 'success',
         data: transformYieldData(response.data),
