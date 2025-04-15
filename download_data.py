@@ -6,8 +6,8 @@ download_path = "data/crop-statistics-fao-all-countries"
 os.makedirs(download_path, exist_ok=True)
 
 try:
-    print(f"Attempting direct download of dataset '{dataset_name}' to '{download_path}' using KaggleApi...")
-    api = kagglehub.KaggleApi()
+    print(f"Attempting direct download of dataset '{dataset_name}' to '{download_path}' using kagglehub.api.KaggleApi...")
+    api = kagglehub.api.KaggleApi()
     api.authenticate()  # Ensure you have your Kaggle API key set up
 
     api.dataset_download_files(
