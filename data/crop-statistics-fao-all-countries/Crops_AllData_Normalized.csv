@@ -10,13 +10,13 @@
   <meta name="description" content="Kaggle is the world&#x2019;s largest data science community with powerful tools and resources to help you achieve your data science goals." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
   <meta name="theme-color" content="#008ABC" />
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" type="text/javascript">
-    window["pageRequestStartTime"] = 1744745708862;
-    window["pageRequestEndTime"] = 1744745708864;
+  <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" type="text/javascript">
+    window["pageRequestStartTime"] = 1744745763002;
+    window["pageRequestEndTime"] = 1744745763007;
     window["initialPageLoadStartTime"] = new Date().getTime();
   </script>
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" id="gsi-client" src="https://accounts.google.com/gsi/client" async defer></script>
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==">window.KAGGLE_JUPYTERLAB_PATH = "/static/assets/jupyterlab-v4/jupyterlab-index-08f674ec89a2021bae69.html";</script>
+  <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" id="gsi-client" src="https://accounts.google.com/gsi/client" async defer></script>
+  <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==">window.KAGGLE_JUPYTERLAB_PATH = "/static/assets/jupyterlab-v4/jupyterlab-index-08f674ec89a2021bae69.html";</script>
   <link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" /><link rel="preconnect" href="https://stats.g.doubleclick.net" /><link rel="preconnect" href="https://storage.googleapis.com" /><link rel="preconnect" href="https://apis.google.com" />
     <link href="/static/images/favicon.ico" rel="shortcut icon" type="image/x-icon" id="dynamic-favicon" />
   <link rel="manifest" href="/static/json/manifest.json" crossorigin="use-credentials">
@@ -32,7 +32,7 @@
     rel="stylesheet" media="print" id="async-google-font-1" />
   <link href="https://fonts.googleapis.com/css2?family=Google+Symbols:FILL@0..1&display=block"
     rel="stylesheet" media="print" id="async-google-font-2" />
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" type="text/javascript">
+  <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" type="text/javascript">
     const styleSheetIds = ["async-google-font-1", "async-google-font-2"];
     styleSheetIds.forEach(function (id) {
       document.getElementById(id).addEventListener("load", function() {
@@ -47,7 +47,7 @@
   
     
  
-      <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==">
+      <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==">
         try{(function(a,s,y,n,c,h,i,d,e){d=s.createElement("style");
         d.appendChild(s.createTextNode(""));s.head.appendChild(d);d=d.sheet;
         y=y.map(x => d.insertRule(x + "{ opacity: 0 !important }"));
@@ -55,7 +55,7 @@
         (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
         })(window,document,['.site-header-react__nav'],'dataLayer',2000,{'GTM-52LNT9S':true});}catch(ex){}
     </script>
-    <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==">
+    <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==">
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
@@ -66,7 +66,7 @@
             'content_group1': 'Account'
         });
     </script>
-    <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" async src="https://www.googletagmanager.com/gtag/js?id=G-T7QHS60L4Q"></script>
+    <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" async src="https://www.googletagmanager.com/gtag/js?id=G-T7QHS60L4Q"></script>
 
   
     
@@ -84,14 +84,14 @@
 
     <meta property="og:image" content="https://www.kaggle.com/static/images/logos/kaggle-logo-opengraph.png" />
     <meta property="twitter:image" content="https://www.kaggle.com/static/images/logos/k-logo-opengraph.png" />
-    <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==">window['useKaggleAnalytics'] = true;</script>
+    <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==">window['useKaggleAnalytics'] = true;</script>
 
-  <script id="gapi-target" nonce="bd9qQtwKD9zFmzE7LXuHcQ==" src="https://apis.google.com/js/api.js" defer
+  <script id="gapi-target" nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" src="https://apis.google.com/js/api.js" defer
     async></script>
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" src="/static/assets/runtime.js?v=00b43d91dfa42d3d73d3"></script>
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" src="/static/assets/vendor.js?v=a62013a985d655b5d6e4"></script>
-  <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" src="/static/assets/app.js?v=8c774d19641ee12bca33"></script>
-    <script nonce="bd9qQtwKD9zFmzE7LXuHcQ==" type="text/javascript">
+  <script nonce="v+dvLK/HSnxew7myS8FsrA==" src="/static/assets/runtime.js?v=00b43d91dfa42d3d73d3"></script>
+  <script nonce="v+dvLK/HSnxew7myS8FsrA==" src="/static/assets/vendor.js?v=a62013a985d655b5d6e4"></script>
+  <script nonce="v+dvLK/HSnxew7myS8FsrA==" src="/static/assets/app.js?v=8c774d19641ee12bca33"></script>
+    <script nonce="v&#x2B;dvLK/HSnxew7myS8FsrA==" type="text/javascript">
       window.kaggleStackdriverConfig = {
         key: 'AIzaSyA4eNqUdRRskJsCZWVz-qL655Xa5JEMreE',
         projectId: 'kaggle-161607',
