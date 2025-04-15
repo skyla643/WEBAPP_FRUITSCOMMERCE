@@ -4,7 +4,7 @@ const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001; // Explicitly set the port to 3001 for debugging
 
 app.use(cors());
 app.use(express.json());
