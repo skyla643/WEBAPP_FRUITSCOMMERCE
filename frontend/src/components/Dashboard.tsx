@@ -30,13 +30,6 @@ interface HealthStatus {
   color: string;
 }
 
-interface ApiResponse<T> {
-  data: T;
-  timestamp: string;
-  status: 'success' | 'error';
-  message?: string;
-}
-
 interface DashboardState {
   regionalData: RegionData[];
   fertilizerData: {
@@ -155,10 +148,10 @@ const ApiTester: React.FC = () => {
       
       for (const endpoint of endpoints) {
         try {
-          const apiUrl = process.env.NODE_ENV === 'development'
-            ? `http://localhost:3001${endpoint}`
-            : endpoint;
+          // Use the base URL from environment variables
+          const apiUrl = process.env.REACT_APP_API_BASE_URL + endpoint;
             
+          console.log(`Testing endpoint: ${apiUrl}`);
           const response = await fetch(apiUrl);
           const status = response.ok ? 'OK' : `Error: ${response.status}`;
           testResults[endpoint] = status;
@@ -369,6 +362,10 @@ const MapCard: React.FC<{
     initialZoom: 10
   };
 
+  const handleViewAll = () => {
+    navigate('/dashboard/orchards');
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 border border-orange-100 relative">
       <div className="flex items-center justify-between mb-4">
@@ -377,7 +374,7 @@ const MapCard: React.FC<{
         </h2>
         <div className="flex space-x-2">
           <button 
-            onClick={() => navigate('/dashboard/orchards')}
+            onClick={handleViewAll}
             className="px-3 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition flex items-center"
           >
             <FaChartLine className="mr-1" /> View All
@@ -449,21 +446,16 @@ const Dashboard: React.FC = () => {
     healthStatus, 
     loading, 
     error, 
-    isLive, 
-    selectedRegion 
+    isLive 
   } = state;
 
   const location = useLocation();
-  const navigate = useNavigate();
   const isDashboardHome = location.pathname === '/dashboard';
 
   // Updated API health check function
   const checkApiHealth = useCallback(async () => {
     try {
-      // Use absolute URL in development
-      const apiUrl = process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3001/api/health'
-        : '/api/health';
+      const apiUrl = process.env.REACT_APP_API_BASE_URL + '/api/health';
         
       console.log("Checking API health at:", apiUrl);
       const response = await fetch(apiUrl);
@@ -482,10 +474,7 @@ const Dashboard: React.FC = () => {
   // Updated fetch data function
   const fetchData = useCallback(async <T,>(endpoint: string, mockData: T): Promise<T> => {
     try {
-      // Use absolute URL in development
-      const apiUrl = process.env.NODE_ENV === 'development'
-        ? `http://localhost:3001${endpoint}`
-        : endpoint;
+      const apiUrl = process.env.REACT_APP_API_BASE_URL + endpoint;
         
       console.log(`Fetching data from: ${apiUrl}`);
       const response = await fetch(apiUrl);
