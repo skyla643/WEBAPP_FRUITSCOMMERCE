@@ -9,9 +9,7 @@ download_path = "data"  # kagglehub will create a subdirectory
 
 try:
     print(f"Downloading dataset '{dataset_name}' to '{download_path}'...")
-    downloaded_path = kagglehub.dataset_download(
-        dataset_name, path=download_path, quiet=False, unzip=True
-    )
+    downloaded_path = kagglehub.dataset_download(dataset_name, path=download_path)
     print(f"Dataset downloaded and extracted to: {downloaded_path}")
 except Exception as e:
     print(f"An error occurred during download: {e}")
