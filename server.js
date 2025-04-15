@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const fs = require('fs');
+const csv = require('csv-parser');
+const path = require('path');
 
 const app = express();
 const PORT = 3001; // Explicitly set the port to 3001 for debugging
@@ -99,6 +102,33 @@ app.get('/api/orchards/geojson', (req, res) => {
       timestamp: new Date().toISOString()
     });
   }
+});
+
+// Endpoint to serve global citrus production data from the CSV file
+app.get('/api/global-citrus-production', async (req, res) => {
+  // Adjust the path to the CSV file based on its location
+  const dataPath = path.join(__dirname, 'crop-statistics-fao-all-countries', 'Crops_AllData_Normalized.csv');
+  const citrusData = [];
+
+  fs.createReadStream(dataPath)
+    .pipe(csv())
+    .on('data', (row) => {
+      if (row['Item'] === 'Citrus Fruit' && row['Element'] === 'Production') {
+        citrusData.push({
+          country: row['Area'],
+          year: parseInt(row['Year']),
+          unit: row['Unit'],
+          value: parseFloat(row['Value']),
+        });
+      }
+    })
+    .on('end', () => {
+      res.json(citrusData);
+    })
+    .on('error', (error) => {
+      console.error('Error reading CSV:', error);
+      res.status(500).json({ error: 'Failed to read CSV data' });
+    });
 });
 
 // Data transformation function
