@@ -4,30 +4,44 @@ import os
 
 dataset_url = "https://www.kaggle.com/datasets/raghavramasamy/crop-statistics-fao-all-countries/download"
 download_path = "data/crop-statistics-fao-all-countries"
-output_filename = "Crops_AllData_Normalized.csv"  # Changed to .csv
+output_filename = "Crops_AllData_Normalized.csv"
 output_path = os.path.join(download_path, output_filename)
 
 os.makedirs(download_path, exist_ok=True)
 
 try:
     print(f"Downloading dataset from: {dataset_url}")
-    # You might need to be logged in to Kaggle and have cookies enabled for this direct download
     response = requests.get(dataset_url, stream=True)
-    response.raise_for_status()  # Raise an exception for bad status codes
+    response.raise_for_status()
 
     with open(output_path, 'wb') as file:
         for chunk in response.iter_content(chunk_size=8192):
             file.write(chunk)
     print(f"Dataset downloaded to: {output_path}")
 
-    # Try reading the CSV with pandas
+    # Try reading the CSV with pandas, specifying the separator
     try:
-        df = pd.read_csv(output_path)
-        print("\nFirst 5 rows of the DataFrame:")
+        df = pd.read_csv(output_path, sep=',')  # Try comma as separator first
+        print("\nFirst 5 rows of the DataFrame (comma-separated):")
         print(df.head())
         print("\nData loaded successfully!")
-    except Exception as e:
-        print(f"Error reading CSV with pandas: {e}")
+    except Exception as e_comma:
+        print(f"Error reading CSV with comma separator: {e_comma}")
+        try:
+            df = pd.read_csv(output_path, sep=';')  # Try semicolon as separator
+            print("\nFirst 5 rows of the DataFrame (semicolon-separated):")
+            print(df.head())
+            print("\nData loaded successfully!")
+        except Exception as e_semicolon:
+            print(f"Error reading CSV with semicolon separator: {e_semicolon}")
+            try:
+                df = pd.read_csv(output_path, sep='\t')  # Try tab as separator
+                print("\nFirst 5 rows of the DataFrame (tab-separated):")
+                print(df.head())
+                print("\nData loaded successfully!")
+            except Exception as e_tab:
+                print(f"Error reading CSV with tab separator: {e_tab}")
+                print("Could not successfully read the CSV file with common delimiters.")
 
 except requests.exceptions.RequestException as e:
     print(f"Error during download: {e}")
