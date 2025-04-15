@@ -1,4 +1,4 @@
-from kagglehub import KaggleApi
+import kagglehub
 import os
 
 # Your Kaggle API credentials (ensure these are set up)
@@ -10,7 +10,7 @@ download_path = 'data/crop-statistics-fao-all-countries'
 os.makedirs(download_path, exist_ok=True)
 
 # Initialize the Kaggle API
-api = KaggleApi()
+api = kagglehub.KaggleApi()
 api.authenticate()  # This will use your credentials
 
 # The name of the dataset you want to download
