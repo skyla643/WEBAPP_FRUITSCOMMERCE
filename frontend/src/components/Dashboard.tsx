@@ -139,6 +139,57 @@ const MOCK_HEALTH_STATUS: HealthStatus[] = [
   }
 ];
 
+// API Tester Component
+const ApiTester: React.FC = () => {
+  const [results, setResults] = useState<Record<string, string>>({});
+  
+  useEffect(() => {
+    const testEndpoints = async () => {
+      const endpoints = [
+        '/api/health',
+        '/api/orchards/geojson',
+        '/api/regional-yield'
+      ];
+      
+      const testResults: Record<string, string> = {};
+      
+      for (const endpoint of endpoints) {
+        try {
+          const apiUrl = process.env.NODE_ENV === 'development'
+            ? `http://localhost:3001${endpoint}`
+            : endpoint;
+            
+          const response = await fetch(apiUrl);
+          const status = response.ok ? 'OK' : `Error: ${response.status}`;
+          testResults[endpoint] = status;
+        } catch (err) {
+          testResults[endpoint] = `Failed: ${err instanceof Error ? err.message : String(err)}`;
+        }
+      }
+      
+      setResults(testResults);
+    };
+    
+    testEndpoints();
+  }, []);
+  
+  return (
+    <div className="fixed bottom-4 right-4 bg-white p-4 rounded shadow-lg z-50">
+      <h3 className="font-bold mb-2">API Connection Test</h3>
+      <ul className="text-sm">
+        {Object.entries(results).map(([endpoint, status]) => (
+          <li key={endpoint} className="mb-1">
+            <span className="font-medium">{endpoint}:</span>{' '}
+            <span className={status === 'OK' ? 'text-green-500' : 'text-red-500'}>
+              {status}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 // Components
 const FertilizerCard: React.FC<{
   data: DashboardState['fertilizerData'];
@@ -406,23 +457,50 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const isDashboardHome = location.pathname === '/dashboard';
 
+  // Updated API health check function
   const checkApiHealth = useCallback(async () => {
     try {
-      const response = await fetch('/api/health');
+      // Use absolute URL in development
+      const apiUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3001/api/health'
+        : '/api/health';
+        
+      console.log("Checking API health at:", apiUrl);
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) throw new Error('API unavailable');
+      
+      const data = await response.json();
+      console.log("API health response:", data);
       setState(prev => ({ ...prev, isLive: true }));
     } catch (err) {
+      console.error("API health check failed:", err);
       setState(prev => ({ ...prev, isLive: false }));
     }
   }, []);
 
+  // Updated fetch data function
   const fetchData = useCallback(async <T,>(endpoint: string, mockData: T): Promise<T> => {
     try {
-      const response = await fetch(endpoint);
+      // Use absolute URL in development
+      const apiUrl = process.env.NODE_ENV === 'development'
+        ? `http://localhost:3001${endpoint}`
+        : endpoint;
+        
+      console.log(`Fetching data from: ${apiUrl}`);
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const json: ApiResponse<T> = await response.json();
-      if (json.status !== 'success') throw new Error(json.message || 'API error');
-      return json.data;
+      
+      const json = await response.json();
+      console.log(`Data from ${endpoint}:`, json);
+      
+      // Handle both direct data and API response format with status
+      if (json.status === 'success' && json.data) {
+        return json.data;
+      }
+      
+      return json;
     } catch (err) {
       console.error(`Failed to fetch ${endpoint}:`, err);
       return mockData;
@@ -509,6 +587,9 @@ const Dashboard: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 bg-fixed font-arial overflow-auto">
       <LiveStatusIndicator isLive={isLive} />
       <Navbar isAdminOrStaff={true} />
+
+      {/* Add the API Tester component for debugging */}
+      <ApiTester />
 
       {isDashboardHome ? (
         <div className="flex-grow p-6 overflow-auto">
